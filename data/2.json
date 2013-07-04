@@ -1,0 +1,17 @@
+{
+    "name": "app-server",
+    "type": "server",
+    "description" : "Dynamic content can be served by an application that responds to a request, generates the content, and then returns the response.",
+    "children": [
+        {
+            "name": "web-server",
+            "type": "software",
+            "children": [
+                {
+                    "name": "application",
+                    "type": "software"
+                }
+            ]
+        }
+   ]
+}
