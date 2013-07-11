@@ -1,49 +1,27 @@
 
 function addNavigation() {
-    var navigation = [1,2,3,4,5,6];
     d3.select('#navigation').selectAll('div')
-        .data(navigation)
+        .data(WorldData)
         .enter().append('li')
-        .html(function(d) { return d; })
-        .on('click', function(d) {
+        .html(function(d, i) { return i; })
+        .on('click', function(d, i) {
             d3.select('#navigation').selectAll('li').classed('active', false);
             d3.select(this).classed('active', true);
-            query(d);
+            query(i);
         })
 }
 
 
-
 function query(name) {
-    d3.json('/data/' + name + ".json", function(json) { 
-        var data = json;
-        data.x0 = h / 2;
-        data.y0 = 0;
-        update(start, data)
-    })
+    WorldData[name].x0 = height/2;
+    WorldData[name].y0 = 0;
+    update(WorldData[0], WorldData[name])
 }
 
 
+var view = false;
 function update(root, data) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
-    
-    // var description = vis.selectAll("g.description")
-    //     .data([data], function(d){ return 'desc.' + d.name })
-
-    // description.enter()
-    //     .append("svg:g")
-    //     .attr('class', 'description')
-    //     .append("svg:text")
-    //         .text(function(d) { return d.description })
-    //         .attr('x', 10)
-    //         .style('fill-opacity', 0)
-    //         .transition()
-    //             .duration(duration)
-    //             .style('fill-opacity', 1)
-
-    // description.exit().remove()
-
-
 
     // Compute the new tree layout.
     var nodes = tree.nodes(data).reverse();
@@ -57,16 +35,30 @@ function update(root, data) {
     var node = vis.selectAll("g.node")
         .data(nodes, function(d) { return d.name });
 
-
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append("svg:g")
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
-        .on("click", function(d) { query(d.name); });
+        .on('click', function(d, i) {
+            if(view) {
+                view = false;
+                world.transition()
+                    .duration(1500)
+                    .attr("transform", "translate(0, 0)")
+            }
+            else {
+                view = true;
+                world.transition()
+                    .duration(1500)
+                    .attr("transform", "translate(-500, 0)")
+            }
 
+        })
+
+    drawWebsite(vis.selectAll('g.website'));
     drawSoftware(vis.selectAll('g.software'));
 
-    drawServers(vis.selectAll('g.server'))    
+    drawServers(vis.selectAll('g.server'))
 
     drawLabels(nodeEnter);
 
@@ -157,10 +149,10 @@ function addDB() {
 
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
     var DB = vis.append('svg:g')
-        .attr("transform", "translate(" + 1000 + "," + 0 + ")")
+        .attr("transform", "translate(" + 900 + "," + 0 + ")")
 
     var node = DB.selectAll("g.db")
-        .data([database], function(d) { return d.name });
+        .data([Database], function(d) { return d.name });
 
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append("svg:g")
@@ -168,7 +160,7 @@ function addDB() {
             return 'db ' + d.type
         })
         .attr("transform", function(d) { 
-            return "translate(" + database.y + "," + database.x + ")";
+            return "translate(" + Database.y + "," + Database.x + ")";
         })
 
     drawServers(DB.selectAll('g.server'));
@@ -203,23 +195,31 @@ function drawSoftware(nodes){
 function drawServers(nodes) {
     return nodes
         .append("svg:rect")
+        //.attr('transform', "translate(50,0)")
         .attr('class', 'rect')
-        .attr('y', -15)
-        .attr('x', -10)
+        //.attr('x', 30)
         .attr("height", 30)
         .attr("width", 24)
-        .style("fill", 'orange');
+}
+
+function drawWebsite(nodes) {
+    return nodes
+        .append("svg:rect")
+        //.attr('transform', "translate(50,0)")
+        .attr('class', 'rect')
+        .attr("height", 30)
+        .attr("width", 24)
 }
 
 function drawLabels(nodes) {
     return nodes
         .append("svg:text")
-        .attr("x", function(d) { 
-            return d.children || d._children ? -10 : 10;
-        })
+        // .attr("x", function(d) { 
+        //     return d.children || d._children ? -10 : 10;
+        // })
         .attr("dy", "-1em")
         .attr("text-anchor", function(d) { 
-            return d.children || d._children ? "end" : "start";
+            return "start";
         })
         .text(function(d) { return d.name; })
         .style("fill-opacity", 1e-6);

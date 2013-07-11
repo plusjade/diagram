@@ -1,0 +1,294 @@
+{
+    "database" : {
+        "name" : "database-server",
+        "type" : "server"
+    }
+    ,
+
+    "world": [
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website"
+        }
+        ,
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website",
+            "children": [
+                {
+                    "name": "static-server",
+                    "type": "server",
+                    "description": "The simplest way to serve content is directly returning the contents of a file."
+                }
+            ]
+        }
+        ,
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website",
+            "children": [
+                {
+                    "name": "static-server",
+                    "type": "server",
+                    "description": "The simplest way to serve content is directly returning the contents of a file.",
+                    "children": [
+                        {
+                            "name": "web-server",
+                            "type": "software"
+                        }
+                    ]
+                }
+            ]
+        }
+        ,
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website",
+            "children": [
+                {
+                    "name": "static-server",
+                    "type": "server",
+                    "description": "The simplest way to serve content is directly returning the contents of a file.",
+                    "children": [
+                        {
+                            "name": "web-server",
+                            "type": "software",
+                            "children": [
+                                {
+                                    "name": "filesystem",
+                                    "type": "software"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        ,
+
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website",
+            "children": [
+                {
+                    "name": "app-server",
+                    "type": "server",
+                    "description": "Dynamic content can be served by an application that responds to a request, generates the content, and then returns the response.",
+                    "children": [
+                        {
+                            "name": "web-server",
+                            "type": "software",
+                            "children": [
+                                {
+                                    "name": "application",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "filesystem",
+                                            "type": "software"
+                                        }
+                                    ]
+
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        ,
+
+
+
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website",
+            "children": [
+                {
+                    "name": "app-server",
+                    "type": "server",
+                    "description": "Applications may require various kinds of data to generate their response so they can connect to a database.",
+                    "children": [
+                        {
+                            "name": "web-server",
+                            "type": "software",
+                            "children": [
+                                {
+                                    "name": "application",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "database",
+                                            "type": "software"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+        ,
+
+
+
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website",
+            "children": [
+                {
+                    "name": "reverse-proxy",
+                    "type": "server",
+                    "description": "This is the simplest way to serve a website. meep meep",
+                    "children": [
+                        {
+                            "name": "app-server",
+                            "type": "server",
+                            "children": [
+                                {
+                                    "name": "web-server",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "application",
+                                            "type": "software",
+                                            "connectToDB": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+        ,
+
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website",
+            "children": [
+                {
+                    "name": "reverse-proxy",
+                    "type": "server",
+                    "description": "This is the simplest way to serve a website. meep meep",
+                    "children": [
+                        {
+                            "name": "app-server",
+                            "type": "server",
+                            "children": [
+                                {
+                                    "name": "web-server",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "application",
+                                            "type": "software",
+                                            "connectToDB": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "app-server1",
+                            "type": "server",
+                            "children": [
+                                {
+                                    "name": "web-server1",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "application1",
+                                            "type": "software",
+                                            "connectToDB": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+        ,
+
+        {
+            "name": "Website",
+            "type": "website",
+            "description": "A website",
+            "children": [
+                {
+                    "name": "reverse-proxy",
+                    "type": "server",
+                    "description": "This is the simplest way to serve a website. meep meep",
+                    "children": [
+                        {
+                            "name": "app-server",
+                            "type": "server",
+                            "children": [
+                                {
+                                    "name": "web-server",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "application",
+                                            "type": "software",
+                                            "connectToDB": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "app-server1",
+                            "type": "server",
+                            "children": [
+                                {
+                                    "name": "web-server1",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "application1",
+                                            "type": "software",
+                                            "connectToDB": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "app-server2",
+                            "type": "server",
+                            "children": [
+                                {
+                                    "name": "web-server2",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "application2",
+                                            "type": "software",
+                                            "connectToDB": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

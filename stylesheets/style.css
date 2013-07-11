@@ -106,6 +106,9 @@ path.link {
   stroke-width: 1.5px;
 }
 #navigation {
+  position:absolute;
+  top:0;
+  right:10px;
   list-style:none;
   margin:0;
   padding:0;
@@ -120,3 +123,42 @@ path.link {
   text-align:center;
 }
 #navigation li.active { background-color:#333; color:#eee }
+
+
+.website rect {
+  height: 30px;
+  width: 24px;
+  stroke: #519548;
+  fill: #88C425;
+}
+
+.server rect {
+  height: 30px;
+  width: 24px;
+  stroke: orange;
+  fill: #FFC48C;
+}
+
+
+
+svg {
+  overflow: visible;
+}
+
+.internet line {
+  stroke: #222;
+  stroke-width: 1;
+}
+
+.internet .background {
+  font-size:20px;
+  fill: white;
+  stroke: whitesmoke;
+  stroke-width: 8;
+  stroke-linecap: 'round';
+  stroke-linejoin: 'round';
+}
+
+.internet .foreground { 
+  font-size:20px;
+}
