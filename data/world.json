@@ -7,33 +7,34 @@
 
     "world": [
         {
+            "description": "This is a website. <br><br> Here's how it gets delivered to your browser.",
+
             "name": "Website",
-            "type": "website",
-            "description": "A website"
+            "type": "website"
         }
         ,
         {
+            "description": "A Website's content is sent from a <em>Server</em>. <br>A server is a physical computer much like a PC/laptop. <br><br> The simplest server just serves static files so we'll call it a <strong>Static Asset Server</strong>.",
+
             "name": "Website",
             "type": "website",
-            "description": "A website",
             "children": [
                 {
                     "name": "static-server",
-                    "type": "server",
-                    "description": "The simplest way to serve content is directly returning the contents of a file."
+                    "type": "server"
                 }
             ]
         }
         ,
         {
+            "description": "Within the Server, software called a <strong>web-server</strong> is run to tell the computer which files are OK to make available to requests over the public internet . <br><br>NOTE: 'web-server' in this case is a <em>software program</em> running <em>on</em> a server (computer). <br><br> Without the web-server, there would be no way to allow or deny access to files on your server.",
+
             "name": "Website",
             "type": "website",
-            "description": "A website",
             "children": [
                 {
                     "name": "static-server",
                     "type": "server",
-                    "description": "The simplest way to serve content is directly returning the contents of a file.",
                     "children": [
                         {
                             "name": "web-server",
@@ -45,14 +46,14 @@
         }
         ,
         {
+            "description": "Once the web-server software is configured, you can point it to a folder with files in it and the web-server will serve the contents of those files directly to the public Internet. <br><br> Ex: mywebsite.com/essays/hell-world.html. The web-server know that mywebsite.com should look in the 'websites' folder, for the sub-folder 'essays' and serve the file 'hello-world.html'",
+
             "name": "Website",
             "type": "website",
-            "description": "A website",
             "children": [
                 {
                     "name": "static-server",
                     "type": "server",
-                    "description": "The simplest way to serve content is directly returning the contents of a file.",
                     "children": [
                         {
                             "name": "web-server",
@@ -71,14 +72,14 @@
         ,
 
         {
+            "description": " A website like Amazon.com has millions of product pages so it would be inefficient to create millions of redundant static files and store them on a server in the normal way. <br><br> Instead the web-server can be configured to serve an <em>application</em> which can respond to arbitrary requests (not just paths to files) and generate <em>dynamic</em> content on the fly.",
+
             "name": "Website",
             "type": "website",
-            "description": "A website",
             "children": [
                 {
                     "name": "app-server",
                     "type": "server",
-                    "description": "Dynamic content can be served by an application that responds to a request, generates the content, and then returns the response.",
                     "children": [
                         {
                             "name": "web-server",
@@ -102,18 +103,16 @@
             ]
         }
         ,
-
-
-
         {
+
+            "description": "<strong>Database</strong><br><br> A database is a software program that may also be installed on the server to help with efficiently storing and accessing various amounts of data. <br><br> Back in the Amazon example, they might use product template files that dynamically populate price, description, and images which are retrieved from a big database of product data.",
+
             "name": "Website",
             "type": "website",
-            "description": "A website",
             "children": [
                 {
                     "name": "app-server",
                     "type": "server",
-                    "description": "Applications may require various kinds of data to generate their response so they can connect to a database.",
                     "children": [
                         {
                             "name": "web-server",
@@ -137,18 +136,43 @@
         }
 
         ,
+        {
+            "description": "<strong>Dedicated Database</strong><br><br> As your website grows more popular, you might need more processing power to help with the load. One option is to move your database software to its own dedicated server. In this way your app server can concentrate on serving web-requests, while your database-server gets more computing power to manage the database.",
 
+            "name": "Website",
+            "type": "website",
+            "children": [
+                {
+                    "name": "app-server",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "web-server",
+                            "type": "software",
+                            "children": [
+                                {
+                                    "name": "application",
+                                    "type": "software",
+                                    "connectToDB": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        ,
 
 
         {
+            "description": "<strong>Reverse Proxy</strong><br><br> Here's where it gets interesting -- notice we add in a another server that directly intercepts web-requests even before our actual server gets them. <br><br> Here this server runs its own web-server software but this time it <em>proxies</em> the request to our app server(s). This implies that we can have more than one app-server take requests! <br><br> This is called scaling <em>horizontally</em>...",
+
             "name": "Website",
             "type": "website",
-            "description": "A website",
             "children": [
                 {
                     "name": "reverse-proxy",
                     "type": "server",
-                    "description": "This is the simplest way to serve a website. meep meep",
                     "children": [
                         {
                             "name": "app-server",
@@ -175,14 +199,14 @@
         ,
 
         {
+            "description": "<strong>multi app architecture</strong><br><br> Here we've added another app-server into our server pool. The reverse-proxy proxies requests to our app servers \"behind the scenes\". <br><br>If one server can only serve say 100k requests, rather than buy a more powerful server, we can just add an additional commodity server and we can now serve 100k*2 requests.",
+
             "name": "Website",
             "type": "website",
-            "description": "A website",
             "children": [
                 {
                     "name": "reverse-proxy",
                     "type": "server",
-                    "description": "This is the simplest way to serve a website. meep meep",
                     "children": [
                         {
                             "name": "app-server",
@@ -226,14 +250,14 @@
         ,
 
         {
+            "description": "<strong>multi app architecture</strong><br><br> Let's add a 3rd server or <em>node</em> just for kicks =). <br><br> Notice how it is now <em>necessary</em> that we have a dedicated database-server because it is the only way to have persistent data across all app-servers. This solves the case where a user's request will be handled by app1 first, then another request is handled by app2, we want his data to be the same in both situations.",
+
             "name": "Website",
             "type": "website",
-            "description": "A website",
             "children": [
                 {
                     "name": "reverse-proxy",
                     "type": "server",
-                    "description": "This is the simplest way to serve a website. meep meep",
                     "children": [
                         {
                             "name": "app-server",

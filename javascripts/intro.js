@@ -1,9 +1,10 @@
 var height = 600;
 
 var world = d3.select("#body").append("svg:svg")
-    .attr("width", '90%')
+    .attr("width", '100%')
     .attr("height", height)
-    .style('border', '1px dashed')
+    .style('border', '1px solid')
+    .style('background-color', "#FFF")
     .append("svg:g")
         .attr("transform", "translate(" + 0 + "," + 0 + ")")
 
@@ -14,10 +15,15 @@ var world = d3.select("#body").append("svg:svg")
 
 var width = d3.select('svg').node().clientWidth;
 
-var vis = world.append("svg:svg").attr('class', 'server-diagram')
+var vis = world.append("svg:svg")
+    .attr('class', 'server-diagram')
     .attr('x', width/2)
     .attr('y', 0)
     .attr('transform', "translate(50, 0)")
+
+
+var description = d3.select("#description")
+    .style("height", height + 'px')
 
 
 // internet line
@@ -60,6 +66,8 @@ function client() {
         .attr('dy', '1.5em')
 }
 client();
+
+
 
 //---------------------------------------------------
 

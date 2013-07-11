@@ -3,6 +3,14 @@ body {
   margin: 0;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica;
+  background-color: #F8F7EE;
+}
+
+#body {
+  position: relative;
+  top:0;
+  left: 350px;
+  width:1000px;
 }
 
 #chart, #header, #footer {
@@ -114,8 +122,7 @@ path.link {
   padding:0;
 }
 #navigation li { 
-  display:inline-block;
-  margin-right:3px;
+  margin-bottom:3px;
   padding:5px 10px;
   background:#eee;
   color:#333;
@@ -161,4 +168,17 @@ svg {
 
 .internet .foreground { 
   font-size:20px;
+}
+
+#description {
+  position: absolute;
+  top:0;
+  left: 0;
+  width:350px;
+  background-color: #F8F7EE;
+}
+
+#description div {
+  font: 16px 'Helvetica Neue';   
+  padding: 15px;
 }

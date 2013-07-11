@@ -29,7 +29,11 @@ function update(root, data) {
     nodes.forEach(function(d) { d.y = d.depth * 180; });
 
     var test = []; nodes.forEach(function(d){ test.push(d.name) }); console.log(test);
-
+    
+    description.selectAll('div').remove();
+    description
+        .append("div")
+            .html(nodes[nodes.length-1].description || '')
 
     // Update the nodes
     var node = vis.selectAll("g.node")
@@ -39,28 +43,33 @@ function update(root, data) {
     var nodeEnter = node.enter().append("svg:g")
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
-        .on('click', function(d, i) {
-            if(view) {
-                view = false;
-                world.transition()
-                    .duration(1500)
-                    .attr("transform", "translate(0, 0)")
-            }
-            else {
-                view = true;
-                world.transition()
-                    .duration(1500)
-                    .attr("transform", "translate(-500, 0)")
-            }
-
-        })
 
     drawWebsite(vis.selectAll('g.website'));
+
+
+    vis.selectAll('g.website').on('click', function(d, i) {
+        if(view) {
+            view = false;
+            world.transition()
+                .duration(1500)
+                .attr("transform", "translate(0, 0)")
+        }
+        else {
+            view = true;
+            world.transition()
+                .duration(1500)
+                .attr("transform", "translate("+ (-(width/2)+10) +", 0)")
+        }
+
+    })
+
+
     drawSoftware(vis.selectAll('g.software'));
 
     drawServers(vis.selectAll('g.server'))
 
     drawLabels(nodeEnter);
+
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -223,14 +232,4 @@ function drawLabels(nodes) {
         })
         .text(function(d) { return d.name; })
         .style("fill-opacity", 1e-6);
-}
-
-function drawDescriptions(nodes) {
-    return nodes
-    .append("svg:text")
-        .attr('class', 'description')
-        .text(function(d) { return d.description })
-        .attr('x', 10)
-        .style('fill-opacity', 1)
-
 }
