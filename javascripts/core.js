@@ -73,17 +73,56 @@ function viewOut() {
             .attr("transform", "translate(0, 0)")
 }
 
+var xold, yold;
+function showActive(active) {
+    var derp = vis.selectAll('g.active')
+        .data(active, function(d) { return d.name })
+
+    var derpEnter = derp.enter().append('svg:g')
+        .attr('class', 'active')
+        .attr("transform", function(d) {
+            return "translate(" + (yold || d.y) + "," + (xold || d.x) + ")"
+        })
+
+    var derpUpdate = derp.transition()
+        .duration(500)
+        .attr("transform", function(d) { 
+            return "translate(" + d.y + "," + d.x + ")";
+        })
+
+    derpEnter.append("line")
+        .attr("x1", -20)
+        .attr("x2", -100)
+        .attr("y1", 30)
+        .attr("y2", 120)
+        .attr("stroke-dasharray", "3, 3")
+    derpEnter.append('path')
+        .attr("transform", "translate(-20,30) rotate(40 0 0)")
+        .attr('d', d3.svg.symbol().type('triangle-up').size(180))
+        .attr('fill', '#333')
+
+    derp.exit().remove();
+
+    if (active[0]) {
+        xold = active[0].x;
+        yold = active[0].y;
+    }
+}
 
 function update(root, data) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
     // Compute the new tree layout.
     var nodes = tree.nodes(data).reverse();
+    var active = [];
     // Normalize for fixed-depth.
-    nodes.forEach(function(d) { d.y = d.depth * 180; });
+    nodes.forEach(function(d) { 
+        d.y = d.depth * 180;
+        if (d.active) active.push(d);
+    });
 
-    var test = []; nodes.forEach(function(d){ test.push(d.name) }); console.log(test);
-    
+    showActive(active);
+
     description.selectAll('div').remove();
     description
         .append("div")

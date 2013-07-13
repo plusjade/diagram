@@ -21,7 +21,8 @@
             "children": [
                 {
                     "name": "static-server",
-                    "type": "server"
+                    "type": "server",
+                    "active" : true
                 }
             ]
         }
@@ -38,7 +39,8 @@
                     "children": [
                         {
                             "name": "web-server",
-                            "type": "software"
+                            "type": "software",
+                            "active" : true
                         }
                     ]
                 }
@@ -61,7 +63,8 @@
                             "children": [
                                 {
                                     "name": "filesystem",
-                                    "type": "software"
+                                    "type": "software",
+                                    "active" : true
                                 }
                             ]
                         }
@@ -80,6 +83,7 @@
                 {
                     "name": "app-server",
                     "type": "server",
+                    "active" : true,
                     "children": [
                         {
                             "name": "web-server",
@@ -88,6 +92,7 @@
                                 {
                                     "name": "application",
                                     "type": "software",
+                                    "active" : true,
                                     "children": [
                                         {
                                             "name": "filesystem",
@@ -124,7 +129,8 @@
                                     "children": [
                                         {
                                             "name": "database",
-                                            "type": "software"
+                                            "type": "software",
+                                            "active" : true
                                         }
                                     ]
                                 }
@@ -173,6 +179,7 @@
                 {
                     "name": "reverse-proxy",
                     "type": "server",
+                    "active" : true,
                     "children": [
                         {
                             "name": "app-server",
@@ -228,6 +235,7 @@
                         {
                             "name": "app-server1",
                             "type": "server",
+                            "active" : true,
                             "children": [
                                 {
                                     "name": "web-server1",
@@ -279,6 +287,7 @@
                         {
                             "name": "app-server1",
                             "type": "server",
+                            "active" : true,
                             "children": [
                                 {
                                     "name": "web-server1",
@@ -296,6 +305,7 @@
                         {
                             "name": "app-server2",
                             "type": "server",
+                            "active" : true,
                             "children": [
                                 {
                                     "name": "web-server2",
