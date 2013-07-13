@@ -6,11 +6,11 @@ body {
   background-color: #F8F7EE;
 }
 
-#body {
+#world {
   position: relative;
   top:0;
   left: 350px;
-  width:1000px;
+  width:1050px;
 }
 
 #chart, #header, #footer {
@@ -116,20 +116,24 @@ path.link {
 #navigation {
   position:absolute;
   top:0;
-  right:10px;
+  left:350px;
   list-style:none;
   margin:0;
   padding:0;
 }
 #navigation li { 
-  margin-bottom:3px;
+  display:inline-block;
+  margin-right:3px;
   padding:5px 10px;
-  background:#eee;
-  color:#333;
+  background:#ECEAD6;
+  color:#1B3742;
   font-size:2em;
   text-align:center;
+  cursor: pointer;
+  border-bottom:3px solid #ECEAD6;
 }
-#navigation li.active { background-color:#333; color:#eee }
+#navigation li:hover { border-color:#DD2B5D; }
+#navigation li.active { background-color:#1B3742; color:#ECEAD6; border-color:#DD2B5D; }
 
 
 .website rect {
@@ -181,4 +185,12 @@ svg {
 #description div {
   font: 16px 'Helvetica Neue';   
   padding: 15px;
+}
+
+#start {
+  padding:5px;
+  background-color: #333;
+  color:#eee;
+  width:80px;
+  text-align: center;
 }

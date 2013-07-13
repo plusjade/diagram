@@ -1,25 +1,79 @@
-
 function addNavigation() {
     d3.select('#navigation').selectAll('div')
         .data(WorldData)
         .enter().append('li')
-        .html(function(d, i) { return i; })
+        .html(function(d, i) { return i === 0 ? 'Start' : i; })
         .on('click', function(d, i) {
-            d3.select('#navigation').selectAll('li').classed('active', false);
-            d3.select(this).classed('active', true);
-            query(i);
+            showStep(i);
         })
 }
 
+function setNav(index) {
+    d3.select('#navigation').selectAll('li')
+        .classed('active', false)
+        .filter(':nth-child('+ (index+1) +')').classed('active', true);
+}
 
-function query(name) {
-    WorldData[name].x0 = height/2;
-    WorldData[name].y0 = 0;
-    update(WorldData[0], WorldData[name])
+// show step based on diagram state.
+function showStep(index) {
+    // stay in bounds
+    if (index < 0) index = WorldData.length-1;
+    if (index > WorldData.length-1) index = 0;
+
+    // click start on initial starting position
+    if(index === 0 && !inView)
+        viewIn().each('end', function(){ 
+            _showStep(1)
+        })
+    // click a step on initial start.
+    else if(index > 0 && !inView)
+        viewIn().each('end', function(){
+            _showStep(index)
+        });
+    // click start when in process (start over)
+    else if(index === 0 && inView) {
+        _showStep(0);
+        viewOut();
+    }
+    // click a step when in process
+    else
+        _showStep(index);
+}
+
+// Internal. Prgramatically show the step.
+function _showStep(index) {
+    WorldData[index].x0 = height/2;
+    WorldData[index].y0 = 0;
+    
+    update(WorldData[0], WorldData[index]);
+    setNav(index);
+    _step = index;
+}
+
+function viewIn(){
+    inView = true;
+    internet.selectAll('text')
+        .transition()
+        .duration(1000)
+        .attr("transform", "translate(70, 0)")
+
+    return  world.transition()
+            .duration(1000)
+            .attr("transform", "translate("+ (-(width/2)) +", 0)")
+}
+function viewOut() {
+    inView = false;
+    internet.selectAll('text')
+        .transition()
+        .duration(1000)
+        .attr("transform", "translate(0, 0)")
+
+    return  world.transition()
+            .duration(1000)
+            .attr("transform", "translate(0, 0)")
 }
 
 
-var view = false;
 function update(root, data) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
@@ -44,25 +98,9 @@ function update(root, data) {
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
 
+
+
     drawWebsite(vis.selectAll('g.website'));
-
-
-    vis.selectAll('g.website').on('click', function(d, i) {
-        if(view) {
-            view = false;
-            world.transition()
-                .duration(1500)
-                .attr("transform", "translate(0, 0)")
-        }
-        else {
-            view = true;
-            world.transition()
-                .duration(1500)
-                .attr("transform", "translate("+ (-(width/2)+10) +", 0)")
-        }
-
-    })
-
 
     drawSoftware(vis.selectAll('g.software'));
 
@@ -80,7 +118,8 @@ function update(root, data) {
 
     nodeUpdate.select("circle")
         .attr("r", 10)
-        .style("fill", 'lightsteelblue');
+        .style("fill", 'lightsteelblue')
+
 
     nodeUpdate.select("text")
         .attr('dx', function(d) {
