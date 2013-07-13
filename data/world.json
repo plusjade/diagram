@@ -7,14 +7,14 @@
 
     "world": [
         {
-            "description": "This is a website. <br><br> Here's how it gets delivered to your browser.",
+            "description": "<strong>This is a website.</strong><br><br> Here's how it gets delivered to your browser.",
 
             "name": "Website",
             "type": "website"
         }
         ,
         {
-            "description": "A Website's content is sent from a <em>Server</em>. <br>A server is a physical computer much like a PC/laptop. <br><br> The simplest server just serves static files so we'll call it a <strong>Static Asset Server</strong>.",
+            "description": "<strong>Server</strong><br><br> A Website's content is sent from a <em>Server</em>. <br>A server is a physical computer much like a PC/laptop. <br><br> The simplest server just serves static files so we'll call it a <strong>Static Asset Server</strong>.",
 
             "name": "Website",
             "type": "website",
@@ -27,7 +27,7 @@
         }
         ,
         {
-            "description": "Within the Server, software called a <strong>web-server</strong> is run to tell the computer which files are OK to make available to requests over the public internet . <br><br>NOTE: 'web-server' in this case is a <em>software program</em> running <em>on</em> a server (computer). <br><br> Without the web-server, there would be no way to allow or deny access to files on your server.",
+            "description": "<strong>Web Server</strong><br><br> Within the Server, software called a <strong>web-server</strong> is run to tell the computer which files are OK to make available to requests over the public internet . <br><br>NOTE: 'web-server' in this case is a <em>software program</em> running <em>on</em> a server (computer). <br><br> Without the web-server, there would be no way to allow or deny access to files on your server.",
 
             "name": "Website",
             "type": "website",
@@ -46,7 +46,7 @@
         }
         ,
         {
-            "description": "Once the web-server software is configured, you can point it to a folder with files in it and the web-server will serve the contents of those files directly to the public Internet. <br><br> Ex: mywebsite.com/essays/hell-world.html. The web-server know that mywebsite.com should look in the 'websites' folder, for the sub-folder 'essays' and serve the file 'hello-world.html'",
+            "description": "<strong>Serving Content</strong><br><br> Once the web-server software is configured, you can point it to a folder with files in it and the web-server will serve the contents of those files directly to the public Internet. <br><br> Ex: mywebsite.com/essays/hell-world.html. The web-server know that mywebsite.com should look in the 'websites' folder, for the sub-folder 'essays' and serve the file 'hello-world.html'",
 
             "name": "Website",
             "type": "website",
@@ -72,7 +72,7 @@
         ,
 
         {
-            "description": " A website like Amazon.com has millions of product pages so it would be inefficient to create millions of redundant static files and store them on a server in the normal way. <br><br> Instead the web-server can be configured to serve an <em>application</em> which can respond to arbitrary requests (not just paths to files) and generate <em>dynamic</em> content on the fly.",
+            "description": "<strong>Web Application</strong><br><br> A website like Amazon.com has millions of product pages so it would be inefficient to create millions of redundant static files and store them on a server in the normal way. <br><br> Instead the web-server can be configured to serve an <em>application</em> which can respond to arbitrary requests (not just paths to files) and generate <em>dynamic</em> content on the fly.",
 
             "name": "Website",
             "type": "website",
