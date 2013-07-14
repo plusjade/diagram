@@ -34,9 +34,53 @@ var Draw = {
     }
 }
 
+var Render = {
+    internet : function(container) {
+        var node = container.append('svg:g').attr('class', 'internet');
+        node.append("line")
+            .attr("x1", '50%')
+            .attr("x2", '50%')
+            .attr("y1", '100%')
+        node.append('svg:text')
+            .text("Public Internet")
+            .attr('class', 'background')
+            .attr('x', '50%')
+            .attr('text-anchor', 'middle')
+            .attr('dy', '1.5em')
+        node.append('svg:text')
+            .text("Public Internet")
+            .attr('class', 'foreground')
+            .attr('x', '50%')
+            .attr('text-anchor', 'middle')
+            .attr('dy', '1.5em')
+
+        return node;
+    }
+
+    ,client : function(container) {
+        var node = container.append('svg:svg')
+            .attr('x', "50%")
+            .attr('y', "50%")
+            .attr('class', 'client')
+        node.append('svg:rect')
+            .attr('transform', "translate(-74,0)")
+            .attr("height", 30)
+            .attr("width", 24)
+            .style("fill", 'red');
+        node.append('svg:text')
+            .attr('transform', "translate(-80,-2)")
+            .text("Client")
+            .style('font-size', 14)
+            .attr('text-anchor', 'end')
+            .attr('dy', '1.5em')
+
+        return node;
+    }
+}
+
 function addNavigation() {
     d3.select('#navigation').selectAll('div')
-        .data(WorldData)
+        .data(World.data)
         .enter().append('li')
         .html(function(d, i) { return i === 0 ? 'Start' : i; })
         .on('click', function(d, i) {
@@ -53,21 +97,21 @@ function setNav(index) {
 // show step based on diagram state.
 function showStep(index) {
     // stay in bounds
-    if (index < 0) index = WorldData.length-1;
-    if (index > WorldData.length-1) index = 0;
+    if (index < 0) index = World.data.length-1;
+    if (index > World.data.length-1) index = 0;
 
     // click start on initial starting position
-    if(index === 0 && !inView)
+    if(index === 0 && !World.isServerDiagraminView)
         viewIn().each('end', function(){ 
             _showStep(1)
         })
     // click a step on initial start.
-    else if(index > 0 && !inView)
+    else if(index > 0 && !World.isServerDiagraminView)
         viewIn().each('end', function(){
             _showStep(index)
         });
     // click start when in process (start over)
-    else if(index === 0 && inView) {
+    else if(index === 0 && World.isServerDiagraminView) {
         _showStep(0);
         viewOut();
     }
@@ -78,33 +122,33 @@ function showStep(index) {
 
 // Internal. Prgramatically show the step.
 function _showStep(index) {
-    WorldData[index].x0 = height/2;
-    WorldData[index].y0 = 0;
+    World.data[index].x0 = World.height/2;
+    World.data[index].y0 = 0;
     
-    update(WorldData[0], WorldData[index]);
+    update(World.data[0], World.data[index]);
     setNav(index);
-    _step = index;
+    World.step = index;
 }
 
 function viewIn(){
-    inView = true;
-    internet.selectAll('text')
+    World.isServerDiagraminView = true;
+    World.internet.selectAll('text')
         .transition()
         .duration(1000)
         .attr("transform", "translate(70, 0)")
 
-    return  world.transition()
+    return  World.container.transition()
             .duration(1000)
-            .attr("transform", "translate("+ (-(width/2)) +", 0)")
+            .attr("transform", "translate("+ (-(World.width/2)) +", 0)")
 }
 function viewOut() {
-    inView = false;
-    internet.selectAll('text')
+    World.isServerDiagraminView = false;
+    World.internet.selectAll('text')
         .transition()
         .duration(1000)
         .attr("transform", "translate(0, 0)")
 
-    return  world.transition()
+    return  World.container.transition()
             .duration(1000)
             .attr("transform", "translate(0, 0)")
 }
@@ -112,8 +156,8 @@ function viewOut() {
 function showPage(name) {
     d3.html("/pages/" + name + ".html?" + Math.random(), function(rsp) {
         if(rsp) {
-            description.selectAll('div').remove();
-            description.append("div")[0][0].appendChild(rsp);
+            World.description.selectAll('div').remove();
+            World.description.append("div")[0][0].appendChild(rsp);
         }
         else {
             console.log('error loading page name:' + name)
@@ -123,7 +167,7 @@ function showPage(name) {
 
 var xold, yold;
 function showActive(active) {
-    var derp = vis.selectAll('g.active')
+    var derp = World.serverDiagram.selectAll('g.active')
         .data(active, function(d) { return d.name })
 
     var derpEnter = derp.enter().append('svg:g')
@@ -133,7 +177,7 @@ function showActive(active) {
         })
 
     var derpUpdate = derp.transition()
-        .duration(500)
+        .duration(World.duration)
         .attr("transform", function(d) { 
             return "translate(" + d.y + "," + d.x + ")";
         })
@@ -159,7 +203,7 @@ function showActive(active) {
 
 function update(root, data) {
     // Compute the new tree layout.
-    var nodes = tree.nodes(data).reverse();
+    var nodes = World.tree.nodes(data).reverse();
     var active = [];
     // Normalize for fixed-depth.
     nodes.forEach(function(d) { 
@@ -170,7 +214,7 @@ function update(root, data) {
     showPage(nodes[nodes.length-1].page);
 
     // Update the nodes
-    var node = vis.selectAll("g.node")
+    var node = World.serverDiagram.selectAll("g.node")
         .data(nodes, function(d) { return d.name });
 
     // Enter any new nodes at the parent's previous position.
@@ -178,14 +222,14 @@ function update(root, data) {
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
 
-    vis.selectAll('g.website').call(Draw.website);
-    vis.selectAll('g.software').call(Draw.software);
-    vis.selectAll('g.server').call(Draw.servers);
+    World.serverDiagram.selectAll('g.website').call(Draw.website);
+    World.serverDiagram.selectAll('g.software').call(Draw.software);
+    World.serverDiagram.selectAll('g.server').call(Draw.servers);
     nodeEnter.call(Draw.labels);
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
-        .duration(duration)
+        .duration(World.duration)
         .attr("transform", function(d) { 
             return "translate(" + d.y + "," + d.x + ")";
         });
@@ -204,7 +248,7 @@ function update(root, data) {
 
     // Transition exiting nodes to the parent's new position.
     var nodeExit = node.exit().transition()
-        .duration(duration)
+        .duration(World.duration)
         .style("fill-opacity", 0)
         .remove();
 
@@ -215,7 +259,7 @@ function update(root, data) {
 
 
     // LINKING DATA
-    var linkData = tree.links(nodes);
+    var linkData = World.tree.links(nodes);
 
 
     // add database links if needed
@@ -225,17 +269,17 @@ function update(root, data) {
     })
 
     if(hasDb) {
-        updateDatabase([Database]);
+        updateDatabase([World.databaseData]);
 
         // hack to point to the db if no other active
         if(active.length === 0)
-            active.push(Database)
+            active.push(World.databaseData)
 
         nodeUpdate.filter(function(d) { return !!d.connectToDB; })
             .each(function(d) {
                 linkData.push({
                     source: d,
-                    target: vis.selectAll("g.db").datum()
+                    target: World.serverDiagram.selectAll("g.db").datum()
                 })
             })
     } 
@@ -244,7 +288,7 @@ function update(root, data) {
 
 
     // Update the links…
-    var link = vis.selectAll("path.link")
+    var link = World.serverDiagram.selectAll("path.link")
         //.data(linkData)
         .data(linkData, function(d) { return d.source.name + '.' + d.target.name; });
 
@@ -253,21 +297,21 @@ function update(root, data) {
         .attr("class", "link")
         .attr("d", function(d) {
             var o = {x: root.x0, y: root.y0};
-            return diagonal({source: o, target: o});
+            return World.diagonal({source: o, target: o});
         })
         .transition()
-            .duration(duration)
-            .attr("d", diagonal);
+            .duration(World.duration)
+            .attr("d", World.diagonal);
 
     // Transition links to their new position.
     link.transition()
-        .duration(duration)
-        .attr("d", diagonal);
+        .duration(World.duration)
+        .attr("d", World.diagonal);
 
 
     // Transition exiting nodes to the parent's new position.
     link.exit().transition()
-        .duration(duration)
+        .duration(World.duration)
         .remove();
 
     // Stash the old positions for transition.
@@ -280,7 +324,7 @@ function update(root, data) {
 }
 
 function updateDatabase(data) {
-    var node = DB.selectAll("g.db")
+    var node = World.databaseDiagram.selectAll("g.db")
         .data(data, function(d) { return d.name });
 
     // Enter any new nodes at the parent's previous position.
@@ -292,12 +336,12 @@ function updateDatabase(data) {
             return "translate(" + d.y + "," + d.x + ")";
         })
 
-    DB.selectAll('g.server').call(Draw.servers);
+    World.databaseDiagram.selectAll('g.server').call(Draw.servers);
     nodeEnter.call(Draw.labels);
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
-        .duration(duration)
+        .duration(World.duration)
         .attr("transform", function(d) { 
             return "translate(" + 0 + "," + d.x + ")";
         });
@@ -307,122 +351,78 @@ function updateDatabase(data) {
         .style("fill-opacity", 1);
 
     node.exit().transition()
-        .duration(duration)
+        .duration(World.duration)
         .style("fill-opacity", 0)
         .remove();
 }
 
+//---------------------------------------------------
+// Initialize application
 
-var height = 600;
+var World = {
+    height : 600
+    ,step : 0
+    ,isServerDiagraminView : false
+    ,duration : 500
+    ,diagonal : d3.svg.diagonal()
+                    .projection(function(d) { return [d.y, d.x]; })
 
-var world = d3.select("#world").append("svg:svg")
+}
+
+World.container = d3.select("#world").append("svg:svg")
     .attr("width", '100%')
-    .attr("height", height)
+    .attr("height", World.height)
     .style('border', '1px solid')
     .style('background-color', "#FFF")
     .style('margin-top', '48px')
     .append("svg:g")
         .attr("transform", "translate(" + 0 + "," + 0 + ")")
 
-// world.append('svg:rect')
-//     .attr("height", '100%')
-//     .attr("width", '100%')
-//     .style("fill", '#eee')
+World.width = d3.select('svg').node().clientWidth;
 
-var width = d3.select('svg').node().clientWidth;
+World.tree = d3.layout.tree().size([World.height, World.width]);
 
-var vis = world.append("svg:svg")
-    .attr('class', 'server-diagram')
-    .attr('x', width/2)
-    .attr('y', 0)
-    .attr('transform', "translate(50, 0)")
+World.serverDiagram = World.container.append("svg:svg")
+                        .attr('class', 'server-diagram')
+                        .attr('x', World.width/2)
+                        .attr('y', 0)
+                        .attr('transform', "translate(50, 0)")
 
+World.description = d3.select("#description")
+                        .style("height", World.height + 'px')
 
-var description = d3.select("#description")
-    .style("height", height + 'px')
+World.databaseDiagram = World.serverDiagram.append('svg:g')
+                        .attr('class', 'database-diagram')
+                        .attr("transform", "translate(" + 900 + "," + 0 + ")")
 
-var DB = vis.append('svg:g')
-    .attr('class', 'database-diagram')
-    .attr("transform", "translate(" + 900 + "," + 0 + ")")
+World.internet = Render.internet(World.container);
 
-// internet line
-var internet = world.append('svg:g').attr('class', 'internet');
-internet.append("line")
-    .attr("x1", '50%')
-    .attr("x2", '50%')
-    .attr("y1", '100%')
+World.client = Render.client(World.container);
 
-internet.append('svg:text')
-    .text("Public Internet")
-    .attr('class', 'background')
-    .attr('x', '50%')
-    .attr('text-anchor', 'middle')
-    .attr('dy', '1.5em')
-
-internet.append('svg:text')
-    .text("Public Internet")
-    .attr('class', 'foreground')
-    .attr('x', '50%')
-    .attr('text-anchor', 'middle')
-    .attr('dy', '1.5em')
-
-// client
-function client() {
-    var client = world.append('svg:svg')
-        .attr('x', "50%")
-        .attr('y', "50%")
-        .attr('class', 'client')
-    client.append('svg:rect')
-        .attr('transform', "translate(-74,0)")
-        .attr("height", 30)
-        .attr("width", 24)
-        .style("fill", 'red');
-    client.append('svg:text')
-        .attr('transform', "translate(-80,-2)")
-        .text("Client")
-        .style('font-size', 14)
-        .attr('text-anchor', 'end')
-        .attr('dy', '1.5em')
-}
-client();
-
-//---------------------------------------------------
-
-var duration = d3.event && d3.event.altKey ? 5000 : 500;
-var tree = d3.layout.tree().size([height, width]);
-
-var diagonal = d3.svg.diagonal()
-    .projection(function(d) { return [d.y, d.x]; });
-
-var WorldData;
-var Database;
-var inView = false;
-var _step = 0;
-
-startServer()
 function startServer() {
     d3.json("/data/world.json?" + Math.random(), function(data) {
 
-        WorldData = data.world;
-        WorldData[0].x0 = height / 2;
-        WorldData[0].y0 = 0;
+        World.data = data.world;
+        World.data[0].x0 = World.height / 2;
+        World.data[0].y0 = 0;
 
-        Database = data.database;
-        Database.x = height / 2;
-        Database.y = 900;
-        Database.x0 = Database.x;
-        Database.y0 = Database.y;
+        World.databaseData = data.database;
+        World.databaseData.x = World.height / 2;
+        World.databaseData.y = 900;
+        World.databaseData.x0 = World.databaseData.x;
+        World.databaseData.y0 = World.databaseData.y;
 
-
-        update(WorldData[0], WorldData[0]);
+        update(World.data[0], World.data[0]);
         addNavigation();
     })
 }
 
+startServer();
+
 d3.select("body")
     .on("keydown", function(){
         if(d3.event.keyCode === 39) // right arrow
-            showStep(_step+1);
+            showStep(World.step+1);
         else if(d3.event.keyCode === 37) // left arrow
-            showStep(_step-1)
+            showStep(World.step-1)
     })
