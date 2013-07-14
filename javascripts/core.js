@@ -122,8 +122,6 @@ function showActive(active) {
 }
 
 function update(root, data) {
-    var duration = d3.event && d3.event.altKey ? 5000 : 500;
-
     // Compute the new tree layout.
     var nodes = tree.nodes(data).reverse();
     var active = [];
@@ -191,17 +189,25 @@ function update(root, data) {
     // LINKING DATA
     var linkData = tree.links(nodes);
 
-    // add database links
-    nodeUpdate.each(function(source) {
-        if(source.connectToDB) {
-            addDB().select(function(target) {
+
+    // add database links if needed
+    var hasDb = false;
+    nodeUpdate.each(function(d) {
+        if(d.connectToDB) { hasDb = true; return }
+    })
+
+    if(hasDb) {
+        updateDatabase([Database]);
+        nodeUpdate.filter(function(d) { return !!d.connectToDB; })
+            .each(function(d) {
                 linkData.push({
-                    source: source,
-                    target: target
+                    source: d,
+                    target: vis.selectAll("g.db").datum()
                 })
             })
-        }
-    })
+    } 
+    else
+        updateDatabase([])
 
 
     // Update the links…
@@ -238,17 +244,9 @@ function update(root, data) {
     });
 }
 
-
-function addDB() {
-    // hack to only allow one database node.
-    if(vis.selectAll("g.db").size() > 0) return vis.selectAll("g.db");
-
-    var duration = d3.event && d3.event.altKey ? 5000 : 500;
-    var DB = vis.append('svg:g')
-        .attr("transform", "translate(" + 900 + "," + 0 + ")")
-
+function updateDatabase(data) {
     var node = DB.selectAll("g.db")
-        .data([Database], function(d) { return d.name });
+        .data(data, function(d) { return d.name });
 
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append("svg:g")
@@ -256,13 +254,11 @@ function addDB() {
             return 'db ' + d.type
         })
         .attr("transform", function(d) { 
-            return "translate(" + Database.y + "," + Database.x + ")";
+            return "translate(" + d.y + "," + d.x + ")";
         })
 
     drawServers(DB.selectAll('g.server'));
-
     drawLabels(nodeEnter);
-
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -271,14 +267,14 @@ function addDB() {
             return "translate(" + 0 + "," + d.x + ")";
         });
 
-
     nodeUpdate.select("text")
-        .attr('dx', function(d) {
-            return d.children || d._children ? -5 : 5;
-        })
+        .attr('dx', 5)
         .style("fill-opacity", 1);
 
-    return vis.selectAll("g.db");
+    node.exit().transition()
+        .duration(duration)
+        .style("fill-opacity", 0)
+        .remove();
 }
 
 function drawSoftware(nodes){
@@ -351,6 +347,9 @@ var vis = world.append("svg:svg")
 var description = d3.select("#description")
     .style("height", height + 'px')
 
+var DB = vis.append('svg:g')
+    .attr('class', 'database-diagram')
+    .attr("transform", "translate(" + 900 + "," + 0 + ")")
 
 // internet line
 var internet = world.append('svg:g').attr('class', 'internet');
@@ -395,7 +394,7 @@ client();
 
 //---------------------------------------------------
 
-
+var duration = d3.event && d3.event.altKey ? 5000 : 500;
 var tree = d3.layout.tree().size([height, width]);
 
 var diagonal = d3.svg.diagonal()
