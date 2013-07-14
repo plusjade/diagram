@@ -131,8 +131,6 @@ function update(root, data) {
         if (d.active) active.push(d);
     });
 
-    showActive(active);
-
     showPage(nodes[nodes.length-1].page);
 
     // Update the nodes
@@ -198,6 +196,11 @@ function update(root, data) {
 
     if(hasDb) {
         updateDatabase([Database]);
+
+        // hack to point to the db if no other active
+        if(active.length === 0)
+            active.push(Database)
+
         nodeUpdate.filter(function(d) { return !!d.connectToDB; })
             .each(function(d) {
                 linkData.push({
@@ -242,6 +245,8 @@ function update(root, data) {
         d.x0 = d.x;
         d.y0 = d.y;
     });
+
+    showActive(active);
 }
 
 function updateDatabase(data) {
