@@ -146,11 +146,13 @@ path.link {
 .server rect {
   height: 30px;
   width: 24px;
-  stroke: orange;
+  stroke: #D46700;
   fill: #FFC48C;
 }
 
-
+.server.active rect {
+  stroke: blue;
+}
 
 svg {
   overflow: visible;
@@ -185,6 +187,15 @@ svg {
 #description div {
   font: 16px 'Helvetica Neue';   
   padding: 15px;
+}
+#description h3 { 
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+}
+#description p {
+  margin:0 0 20px 0;
+  line-height: 1.3em;
 }
 
 #start {
