@@ -217,6 +217,7 @@
                         {
                             "name": "app-server",
                             "type": "server",
+                            "active" : true,
                             "children": [
                                 {
                                     "name": "web-server",
@@ -268,6 +269,7 @@
                     "children": [
                         {
                             "name": "app-server",
+                            "active" : true,
                             "type": "server",
                             "children": [
                                 {
