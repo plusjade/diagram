@@ -1,3 +1,39 @@
+var Draw = {
+    software : function(nodes) {
+        return nodes
+            .append("svg:circle")
+            .attr("r", 1e-6)
+            .style("fill", 'lightsteelblue');
+    }
+
+    ,servers : function(nodes) {
+        return nodes
+            .append("svg:rect")
+            .attr('class', 'rect')
+            .attr("height", 30)
+            .attr("width", 24)
+    }
+
+    ,website : function(nodes) {
+        return nodes
+            .append("svg:rect")
+            .attr('class', 'rect')
+            .attr("height", 30)
+            .attr("width", 24)
+    }
+
+    ,labels : function(nodes) {
+        return nodes
+            .append("svg:text")
+            .attr("dy", "-1em")
+            .attr("text-anchor", function(d) { 
+                return "start";
+            })
+            .text(function(d) { return d.name; })
+            .style("fill-opacity", 1e-6);
+    }
+}
+
 function addNavigation() {
     d3.select('#navigation').selectAll('div')
         .data(WorldData)
@@ -142,16 +178,10 @@ function update(root, data) {
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
 
-
-
-    drawWebsite(vis.selectAll('g.website'));
-
-    drawSoftware(vis.selectAll('g.software'));
-
-    drawServers(vis.selectAll('g.server'))
-
-    drawLabels(nodeEnter);
-
+    vis.selectAll('g.website').call(Draw.website);
+    vis.selectAll('g.software').call(Draw.software);
+    vis.selectAll('g.server').call(Draw.servers);
+    nodeEnter.call(Draw.labels);
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -262,8 +292,8 @@ function updateDatabase(data) {
             return "translate(" + d.y + "," + d.x + ")";
         })
 
-    drawServers(DB.selectAll('g.server'));
-    drawLabels(nodeEnter);
+    DB.selectAll('g.server').call(Draw.servers);
+    nodeEnter.call(Draw.labels);
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -281,47 +311,6 @@ function updateDatabase(data) {
         .style("fill-opacity", 0)
         .remove();
 }
-
-function drawSoftware(nodes){
-    return nodes
-        .append("svg:circle")
-        .attr("r", 1e-6)
-        .style("fill", 'lightsteelblue');
-}
-
-function drawServers(nodes) {
-    return nodes
-        .append("svg:rect")
-        //.attr('transform', "translate(50,0)")
-        .attr('class', 'rect')
-        //.attr('x', 30)
-        .attr("height", 30)
-        .attr("width", 24)
-}
-
-function drawWebsite(nodes) {
-    return nodes
-        .append("svg:rect")
-        //.attr('transform', "translate(50,0)")
-        .attr('class', 'rect')
-        .attr("height", 30)
-        .attr("width", 24)
-}
-
-function drawLabels(nodes) {
-    return nodes
-        .append("svg:text")
-        // .attr("x", function(d) { 
-        //     return d.children || d._children ? -10 : 10;
-        // })
-        .attr("dy", "-1em")
-        .attr("text-anchor", function(d) { 
-            return "start";
-        })
-        .text(function(d) { return d.name; })
-        .style("fill-opacity", 1e-6);
-}
-
 
 
 var height = 600;
