@@ -78,56 +78,71 @@ var Draw = {
     }
 }
 
-function addNavigation() {
-    d3.select('#navigation').selectAll('div')
-        .data(World.data)
-        .enter().append('li')
-        .html(function(d, i) { return i === 0 ? 'Start' : i; })
-        .on('click', function(d, i) {
-            showStep(i);
-        })
-}
+var Navigation = {
+    current : 0
 
-function setNav(index) {
-    d3.select('#navigation').selectAll('li')
-        .classed('active', false)
-        .filter(':nth-child('+ (index+1) +')').classed('active', true);
-}
+    , node : d3.select('#navigation')
 
-// show step based on diagram state.
-function showStep(index) {
-    // stay in bounds
-    if (index < 0) index = World.data.length-1;
-    if (index > World.data.length-1) index = 0;
-
-    // click start on initial starting position
-    if(index === 0 && !World.isServerDiagraminView)
-        viewIn().each('end', function(){ 
-            _showStep(1)
-        })
-    // click a step on initial start.
-    else if(index > 0 && !World.isServerDiagraminView)
-        viewIn().each('end', function(){
-            _showStep(index)
-        });
-    // click start when in process (start over)
-    else if(index === 0 && World.isServerDiagraminView) {
-        _showStep(0);
-        viewOut();
+    , render : function() {
+        var self = this;
+        self.node.selectAll('div')
+            .data(World.data)
+            .enter().append('li')
+            .html(function(d, i) { return i === 0 ? 'Start' : i; })
+            .on('click', function(d, i) {
+                self.navigate(i);
+            })
     }
-    // click a step when in process
-    else
-        _showStep(index);
-}
 
-// Internal. Prgramatically show the step.
-function _showStep(index) {
-    World.data[index].x0 = World.height/2;
-    World.data[index].y0 = 0;
-    
-    update(World.data[0], World.data[index]);
-    setNav(index);
-    World.step = index;
+    , navigate : function(index) {
+        var self = this;
+        // stay in bounds
+        if (index < 0) index = World.data.length-1;
+        if (index > World.data.length-1) index = 0;
+
+        // click start on initial starting position
+        if(index === 0 && !World.isServerDiagraminView)
+            viewIn().each('end', function(){ 
+                self._navigate(1)
+            })
+        // click a step on initial start.
+        else if(index > 0 && !World.isServerDiagraminView)
+            viewIn().each('end', function(){
+                self._navigate(index)
+            });
+        // click start when in process (start over)
+        else if(index === 0 && World.isServerDiagraminView) {
+            self._navigate(0);
+            viewOut();
+        }
+        // click a step when in process
+        else
+           self._navigate(index);
+    }
+
+    // Internal. Prgramatically navigate to step at index.
+    , _navigate : function(index) {
+        World.data[index].x0 = World.height/2;
+        World.data[index].y0 = 0;
+        
+        update(World.data[0], World.data[index]);
+        this.highlight(index);
+        this.current = index;
+    }
+
+    , next : function() {
+        this.navigate(this.current+1);
+    }
+
+    , previous : function() {
+        this.navigate(this.current-1);
+    }
+
+    , highlight : function(index) {
+        this.node.selectAll('li')
+            .classed('active', false)
+            .filter(':nth-child('+ (index+1) +')').classed('active', true);
+    }
 }
 
 function viewIn(){
@@ -361,7 +376,6 @@ function updateDatabase(data) {
 
 var World = {
     height : 600
-    ,step : 0
     ,isServerDiagraminView : false
     ,duration : 500
     ,diagonal : d3.svg.diagonal()
@@ -413,7 +427,7 @@ function startServer() {
         World.databaseData.y0 = World.databaseData.y;
 
         update(World.data[0], World.data[0]);
-        addNavigation();
+        Navigation.render();
     })
 }
 
@@ -422,7 +436,7 @@ startServer();
 d3.select("body")
     .on("keydown", function(){
         if(d3.event.keyCode === 39) // right arrow
-            showStep(World.step+1);
+            Navigation.next();
         else if(d3.event.keyCode === 37) // left arrow
-            showStep(World.step-1)
+            Navigation.previous()
     })
