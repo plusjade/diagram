@@ -73,6 +73,18 @@ function viewOut() {
             .attr("transform", "translate(0, 0)")
 }
 
+function showPage(name) {
+    d3.html("/pages/" + name + ".html?" + Math.random(), function(rsp) {
+        if(rsp) {
+            description.selectAll('div').remove();
+            description.append("div")[0][0].appendChild(rsp);
+        }
+        else {
+            console.log('error loading page name:' + name)
+        }
+    })
+}
+
 var xold, yold;
 function showActive(active) {
     var derp = vis.selectAll('g.active')
@@ -123,10 +135,7 @@ function update(root, data) {
 
     showActive(active);
 
-    description.selectAll('div').remove();
-    description
-        .append("div")
-            .html(nodes[nodes.length-1].description || '')
+    showPage(nodes[nodes.length-1].page);
 
     // Update the nodes
     var node = vis.selectAll("g.node")

@@ -7,14 +7,14 @@
 
     "world": [
         {
-            "description": "<strong>This is a website.</strong><br><br> Here's how it gets delivered to your browser.",
+            "page" : "website",
 
             "name": "Website",
             "type": "website"
         }
         ,
         {
-            "description": "<strong>Server</strong><br><br> A Website's content is sent from a <em>Server</em>. <br>A server is a physical computer much like a PC/laptop. <br><br> The simplest server just serves static files so we'll call it a <strong>Static Asset Server</strong>.",
+            "page" : "static-server",
 
             "name": "Website",
             "type": "website",
@@ -28,7 +28,7 @@
         }
         ,
         {
-            "description": "<strong>Web Server</strong><br><br> Within the Server, software called a <strong>web-server</strong> is run to tell the computer which files are OK to make available to requests over the public internet . <br><br>NOTE: 'web-server' in this case is a <em>software program</em> running <em>on</em> a server (computer). <br><br> Without the web-server, there would be no way to allow or deny access to files on your server.",
+            "page" : "web-server",
 
             "name": "Website",
             "type": "website",
@@ -48,7 +48,7 @@
         }
         ,
         {
-            "description": "<strong>Serving Content</strong><br><br> Once the web-server software is configured, you can point it to a folder with files in it and the web-server will serve the contents of those files directly to the public Internet. <br><br> Ex: mywebsite.com/essays/hell-world.html. The web-server know that mywebsite.com should look in the 'websites' folder, for the sub-folder 'essays' and serve the file 'hello-world.html'",
+            "page" : "filesystem",
 
             "name": "Website",
             "type": "website",
@@ -75,7 +75,7 @@
         ,
 
         {
-            "description": "<strong>Web Application</strong><br><br> A website like Amazon.com has millions of product pages so it would be inefficient to create millions of redundant static files and store them on a server in the normal way. <br><br> Instead the web-server can be configured to serve an <em>application</em> which can respond to arbitrary requests (not just paths to files) and generate <em>dynamic</em> content on the fly.",
+            "page" : "web-application",
 
             "name": "Website",
             "type": "website",
@@ -109,8 +109,7 @@
         }
         ,
         {
-
-            "description": "<strong>Database</strong><br><br> A database is a software program that may also be installed on the server to help with efficiently storing and accessing various amounts of data. <br><br> Back in the Amazon example, they might use product template files that dynamically populate price, description, and images which are retrieved from a big database of product data.",
+            "page" : "database",
 
             "name": "Website",
             "type": "website",
@@ -143,7 +142,7 @@
 
         ,
         {
-            "description": "<strong>Dedicated Database</strong><br><br> As your website grows more popular, you might need more processing power to help with the load. One option is to move your database software to its own dedicated server. In this way your app server can concentrate on serving web-requests, while your database-server gets more computing power to manage the database.",
+            "page" : "dedicated-database",
 
             "name": "Website",
             "type": "website",
@@ -171,7 +170,7 @@
 
 
         {
-            "description": "<strong>Reverse Proxy</strong><br><br> Here's where it gets interesting -- notice we add in a another server that directly intercepts web-requests even before our actual server gets them. <br><br> Here this server runs its own web-server software but this time it <em>proxies</em> the request to our app server(s). This implies that we can have more than one app-server take requests! <br><br> This is called scaling <em>horizontally</em>...",
+            "page" : "reverse-proxy",
 
             "name": "Website",
             "type": "website",
@@ -206,7 +205,7 @@
         ,
 
         {
-            "description": "<strong>multi app architecture</strong><br><br> Here we've added another app-server into our server pool. The reverse-proxy proxies requests to our app servers \"behind the scenes\". <br><br>If one server can only serve say 100k requests, rather than buy a more powerful server, we can just add an additional commodity server and we can now serve 100k*2 requests.",
+            "page" : "multi-app-architecture",
 
             "name": "Website",
             "type": "website",
@@ -258,7 +257,7 @@
         ,
 
         {
-            "description": "<strong>multi app architecture</strong><br><br> Let's add a 3rd server or <em>node</em> just for kicks =). <br><br> Notice how it is now <em>necessary</em> that we have a dedicated database-server because it is the only way to have persistent data across all app-servers. This solves the case where a user's request will be handled by app1 first, then another request is handled by app2, we want his data to be the same in both situations.",
+            "page" : "multi-app-architecture-2",
 
             "name": "Website",
             "type": "website",
