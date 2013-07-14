@@ -1,4 +1,4 @@
-var Draw = {
+var Style = {
     software : function(nodes) {
         return nodes
             .append("svg:circle")
@@ -34,7 +34,7 @@ var Draw = {
     }
 }
 
-var Render = {
+var Draw = {
     internet : function(container) {
         var node = container.append('svg:g').attr('class', 'internet');
         node.append("line")
@@ -222,10 +222,10 @@ function update(root, data) {
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
 
-    World.serverDiagram.selectAll('g.website').call(Draw.website);
-    World.serverDiagram.selectAll('g.software').call(Draw.software);
-    World.serverDiagram.selectAll('g.server').call(Draw.servers);
-    nodeEnter.call(Draw.labels);
+    World.serverDiagram.selectAll('g.website').call(Style.website);
+    World.serverDiagram.selectAll('g.software').call(Style.software);
+    World.serverDiagram.selectAll('g.server').call(Style.servers);
+    nodeEnter.call(Style.labels);
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -336,8 +336,8 @@ function updateDatabase(data) {
             return "translate(" + d.y + "," + d.x + ")";
         })
 
-    World.databaseDiagram.selectAll('g.server').call(Draw.servers);
-    nodeEnter.call(Draw.labels);
+    World.databaseDiagram.selectAll('g.server').call(Style.servers);
+    nodeEnter.call(Style.labels);
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -395,9 +395,9 @@ World.databaseDiagram = World.serverDiagram.append('svg:g')
                         .attr('class', 'database-diagram')
                         .attr("transform", "translate(" + 900 + "," + 0 + ")")
 
-World.internet = Render.internet(World.container);
+World.internet = Draw.internet(World.container);
 
-World.client = Render.client(World.container);
+World.client = Draw.client(World.container);
 
 function startServer() {
     d3.json("/data/world.json?" + Math.random(), function(data) {
