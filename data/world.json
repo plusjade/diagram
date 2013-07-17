@@ -10,7 +10,8 @@
             "page" : "website",
 
             "name": "Website",
-            "type": "website"
+            "type": "website",
+            "active" : true
         }
         ,
         {
@@ -257,6 +258,56 @@
 
         ,
 
+        {
+            "page" : "multi-app-database",
+
+            "name": "Website",
+            "type": "website",
+            "children": [
+                {
+                    "name": "reverse-proxy",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "app-server",
+                            "type": "server",
+                            "children": [
+                                {
+                                    "name": "web-server",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "application",
+                                            "type": "software",
+                                            "connectToDB": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "app-server1",
+                            "type": "server",
+                            "children": [
+                                {
+                                    "name": "web-server1",
+                                    "type": "software",
+                                    "children": [
+                                        {
+                                            "name": "application1",
+                                            "type": "software",
+                                            "connectToDB": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        ,
+        
         {
             "page" : "multi-app-architecture-2",
 

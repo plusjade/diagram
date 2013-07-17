@@ -1,3 +1,13 @@
 <h3>Web Application</h3>
-<p>A website like Amazon.com has millions of product pages so it would be inefficient to create millions of redundant static files and store them on a server in the normal way.</p>
-<p>Instead the web-server can be configured to serve an <em>application</em> which can respond to arbitrary requests (not just paths to files) and generate <em>dynamic</em> content on the fly.</p>
+<p>
+  Serving static files from the filesystem is really fast but it does not scale.
+</p>
+<p>
+  Consider that amazon.com displays millions of products; creating millions of static files would take forever and be hard to maintain.
+</p>
+
+<p>
+  Instead the web-server can be configured to serve an <strong>application</strong> instead of static files.
+  An application (web-app) is a software program that responds to web requests (sent from the web-server).
+  An application generates <em>dynamic</em> responses based on the input you feed into it.
+</p>

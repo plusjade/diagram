@@ -1,6 +1,13 @@
 <h3>Multi-app Architecture</h3>
 <p>
-  Here we've added another app-server into our server pool.
-  The reverse-proxy proxies requests to our app servers "behind the scenes".
+  Here we add another app-server into our server pool.
+  The reverse-proxy proxies requests to our app servers transparently behind the scenes.
 </p>
-<p>If one server can only serve say 100k requests, rather than buy a more powerful server, we can just add an additional commodity server and we can now serve 100k*2 requests.</p>
+
+<p>
+  Scaling horizontally is usually very cost effective because it's cheaper to buy many commodity servers than a few powerful servers.
+</p>
+
+<p>
+  It also mitigates risk; if you only have one powerful server and it fails, your site goes down. Many servers means some can fail and the others will pick up the load.
+</p>
