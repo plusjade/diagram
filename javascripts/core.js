@@ -13,7 +13,19 @@ var Style = {
             .attr("height", 30)
             .attr("width", 24)
     }
+    ,internet : function(nodes) {
+        return nodes.append('svg:g').attr('class', '_internet')
+            .append("line")
+                .attr("y1", '-50%')
+                .attr("y2", '50%')
+                .attr("stroke-dasharray", "3, 3")
 
+
+        return nodes
+            .append("svg:circle")
+            .attr("r", 1e-10)
+            .style("fill", '#333');
+    }
     ,website : function(nodes) {
         return nodes
             .append("svg:rect")
@@ -21,7 +33,12 @@ var Style = {
             .attr("height", 30)
             .attr("width", 24)
     }
-
+    ,webBrowser : function(nodes) {
+        return nodes
+            .append('path')
+            .attr('d', d3.svg.symbol().type('diamond').size(600))
+            .style("fill", '#0B486B');
+    }
     ,labels : function(nodes) {
         return nodes
             .append("svg:text")
@@ -69,7 +86,7 @@ var Draw = {
             .style("fill", 'red');
         node.append('svg:text')
             .attr('transform', "translate(-80,-2)")
-            .text("Client")
+            .text("Web Browser")
             .style('font-size', 14)
             .attr('text-anchor', 'end')
             .attr('dy', '1.5em')
@@ -147,10 +164,10 @@ var Navigation = {
 
 function viewIn(){
     World.isServerDiagraminView = true;
-    World.internet.selectAll('text')
-        .transition()
-        .duration(1000)
-        .attr("transform", "translate(70, 0)")
+    // World.internet.selectAll('text')
+    //     .transition()
+    //     .duration(1000)
+    //     .attr("transform", "translate(70, 0)")
 
     return  World.container.transition()
             .duration(1000)
@@ -158,10 +175,10 @@ function viewIn(){
 }
 function viewOut() {
     World.isServerDiagraminView = false;
-    World.internet.selectAll('text')
-        .transition()
-        .duration(1000)
-        .attr("transform", "translate(0, 0)")
+    // World.internet.selectAll('text')
+    //     .transition()
+    //     .duration(1000)
+    //     .attr("transform", "translate(0, 0)")
 
     return  World.container.transition()
             .duration(1000)
@@ -222,7 +239,7 @@ function update(root, data) {
     var active = [];
     // Normalize for fixed-depth.
     nodes.forEach(function(d) { 
-        d.y = d.depth * 180;
+        d.y = d.depth * 100; // makes it so initial nodes don't take up the entire width
         if (d.active) active.push(d);
     });
 
@@ -237,9 +254,12 @@ function update(root, data) {
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
 
+    // fix this (adds nodes for every update)
+    World.serverDiagram.selectAll('g.web-browser').call(Style.webBrowser);
     World.serverDiagram.selectAll('g.website').call(Style.website);
     World.serverDiagram.selectAll('g.software').call(Style.software);
     World.serverDiagram.selectAll('g.server').call(Style.servers);
+    World.serverDiagram.selectAll('g.internet').call(Style.internet);
     nodeEnter.call(Style.labels);
 
     // Transition nodes to their new position.
@@ -407,11 +427,11 @@ World.description = d3.select("#description")
 
 World.databaseDiagram = World.serverDiagram.append('svg:g')
                         .attr('class', 'database-diagram')
-                        .attr("transform", "translate(" + 900 + "," + 0 + ")")
+                        .attr("transform", "translate(" + 950 + "," + 0 + ")")
 
-World.internet = Draw.internet(World.container);
+//World.internet = Draw.internet(World.container);
 
-World.client = Draw.client(World.container);
+//World.client = Draw.client(World.container);
 
 function startServer() {
     d3.json("/data/world.json?" + Math.random(), function(data) {
@@ -422,7 +442,7 @@ function startServer() {
 
         World.databaseData = data.database;
         World.databaseData.x = World.height / 2;
-        World.databaseData.y = 900;
+        World.databaseData.y = 950;
         World.databaseData.x0 = World.databaseData.x;
         World.databaseData.y0 = World.databaseData.y;
 
