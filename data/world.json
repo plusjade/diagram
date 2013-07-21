@@ -7,40 +7,27 @@
 
     "world": [
         {
-            "page" : "website",
+            "page" : "web-browser",
 
-            "name": "Website",
-            "type": "website",
+            "name": "Web Browser",
+            "type": "web-browser",
             "active" : true
         }
         ,
-        {
-            "page" : "static-server",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
-                {
-                    "name": "static-server",
-                    "type": "server",
-                    "active" : true
-                }
-            ]
-        }
-        ,
         {
-            "page" : "web-server",
+            "page" : "website",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
                 {
-                    "name": "static-server",
-                    "type": "server",
-                    "children": [
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
                         {
-                            "name": "web-server",
-                            "type": "software",
+                            "name": "Web Page",
+                            "type": "website",
                             "active" : true
                         }
                     ]
@@ -49,22 +36,22 @@
         }
         ,
         {
-            "page" : "filesystem",
+            "page" : "static-server",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
                 {
-                    "name": "static-server",
-                    "type": "server",
-                    "children": [
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
                         {
-                            "name": "web-server",
-                            "type": "software",
-                            "children": [
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
                                 {
-                                    "name": "filesystem",
-                                    "type": "software",
+                                    "name": "static-server",
+                                    "type": "server",
                                     "active" : true
                                 }
                             ]
@@ -76,63 +63,131 @@
         ,
 
         {
-            "page" : "web-application",
+            "page" : "filesystem",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
                 {
-                    "name": "app-server",
-                    "type": "server",
-                    "active" : true,
-                    "children": [
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
                         {
-                            "name": "web-server",
-                            "type": "software",
-                            "children": [
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
                                 {
-                                    "name": "application",
-                                    "type": "software",
-                                    "active" : true,
-                                    "children": [
+                                    "name": "static-server",
+                                    "type": "server",
+                                    "children" : [
                                         {
                                             "name": "filesystem",
-                                            "type": "software"
-                                        }
-                                    ]
-
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-        ,
-        {
-            "page" : "database",
-
-            "name": "Website",
-            "type": "website",
-            "children": [
-                {
-                    "name": "app-server",
-                    "type": "server",
-                    "children": [
-                        {
-                            "name": "web-server",
-                            "type": "software",
-                            "children": [
-                                {
-                                    "name": "application",
-                                    "type": "software",
-                                    "children": [
-                                        {
-                                            "name": "database",
                                             "type": "software",
                                             "active" : true
                                         }
                                     ]
+                                    
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        ,
+
+        {
+            "page" : "web-server",
+
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
+                {
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
+                        {
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
+                                {
+                                    "name": "Web Page",
+                                    "type": "website",
+                                    "children": [
+                                        {
+                                            "name": "static-server",
+                                            "type": "server",
+                                            "children": [
+                                                {
+                                                    "name": "web-server",
+                                                    "type": "software",
+                                                    "active" : true,
+                                                    "children": [
+                                                        {
+                                                            "name": "filesystem",
+                                                            "type": "software"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+
+        ,
+
+
+        {
+            "page" : "web-application",
+
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
+                {
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
+                        {
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
+                                {
+                                    "name": "Web Page",
+                                    "type": "website",
+                                    "children": [
+                                        {
+                                            "name": "app-server",
+                                            "type": "server",
+                                            "active" : true,
+                                            "children": [
+                                                {
+                                                    "name": "web-server",
+                                                    "type": "software",
+                                                    "children": [
+                                                        {
+                                                            "name": "application",
+                                                            "type": "software",
+                                                            "active" : true,
+                                                            "children": [
+                                                                {
+                                                                    "name": "filesystem",
+                                                                    "type": "software"
+                                                                }
+                                                            ]
+
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -142,24 +197,100 @@
         }
 
         ,
+
+
+
+        {
+            "page" : "database",
+
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
+                {
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
+                        {
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
+                                {
+                                    "name": "Web Page",
+                                    "type": "website",
+                                    "children": [
+                                        {
+                                            "name": "app-server",
+                                            "type": "server",
+                                            "children": [
+                                                {
+                                                    "name": "web-server",
+                                                    "type": "software",
+                                                    "children": [
+                                                        {
+                                                            "name": "application",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "database",
+                                                                    "type": "software",
+                                                                    "active" : true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+
+        ,
+
+
+
         {
             "page" : "dedicated-database",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
                 {
-                    "name": "app-server",
-                    "type": "server",
-                    "children": [
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
                         {
-                            "name": "web-server",
-                            "type": "software",
-                            "children": [
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
                                 {
-                                    "name": "application",
-                                    "type": "software",
-                                    "connectToDB": true
+                                    "name": "Web Page",
+                                    "type": "website",
+                                    "children": [
+                                        {
+                                            "name": "app-server",
+                                            "type": "server",
+                                            "children": [
+                                                {
+                                                    "name": "web-server",
+                                                    "type": "software",
+                                                    "children": [
+                                                        {
+                                                            "name": "application",
+                                                            "type": "software",
+                                                            "connectToDB": true
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -167,32 +298,54 @@
                 }
             ]
         }
+
         ,
+
+
+
 
 
         {
             "page" : "reverse-proxy",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
                 {
-                    "name": "reverse-proxy",
-                    "type": "server",
-                    "active" : true,
-                    "children": [
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
                         {
-                            "name": "app-server",
-                            "type": "server",
-                            "children": [
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
                                 {
-                                    "name": "web-server",
-                                    "type": "software",
+                                    "name": "Web Page",
+                                    "type": "website",
                                     "children": [
                                         {
-                                            "name": "application",
-                                            "type": "software",
-                                            "connectToDB": true
+                                            "name": "reverse-proxy",
+                                            "type": "server",
+                                            "active" : true,
+                                            "children": [
+                                                {
+                                                    "name": "app-server",
+                                                    "type": "server",
+                                                    "children": [
+                                                        {
+                                                            "name": "web-server",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "application",
+                                                                    "type": "software",
+                                                                    "connectToDB": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -203,49 +356,72 @@
             ]
         }
 
+
         ,
+
+
+
+
 
         {
             "page" : "multi-app-architecture",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
                 {
-                    "name": "reverse-proxy",
-                    "type": "server",
-                    "children": [
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
                         {
-                            "name": "app-server",
-                            "type": "server",
-                            "active" : true,
-                            "children": [
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
                                 {
-                                    "name": "web-server",
-                                    "type": "software",
+                                    "name": "Web Page",
+                                    "type": "website",
                                     "children": [
                                         {
-                                            "name": "application",
-                                            "type": "software",
-                                            "connectToDB": true
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "app-server1",
-                            "type": "server",
-                            "active" : true,
-                            "children": [
-                                {
-                                    "name": "web-server1",
-                                    "type": "software",
-                                    "children": [
-                                        {
-                                            "name": "application1",
-                                            "type": "software",
-                                            "connectToDB": true
+                                            "name": "reverse-proxy",
+                                            "type": "server",
+                                            "children": [
+                                                {
+                                                    "name": "app-server",
+                                                    "type": "server",
+                                                    "active" : true,
+                                                    "children": [
+                                                        {
+                                                            "name": "web-server",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "application",
+                                                                    "type": "software",
+                                                                    "connectToDB": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "app-server1",
+                                                    "type": "server",
+                                                    "active" : true,
+                                                    "children": [
+                                                        {
+                                                            "name": "web-server1",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "application1",
+                                                                    "type": "software",
+                                                                    "connectToDB": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -256,47 +432,67 @@
             ]
         }
 
+
         ,
+
 
         {
             "page" : "multi-app-database",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
                 {
-                    "name": "reverse-proxy",
-                    "type": "server",
-                    "children": [
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
                         {
-                            "name": "app-server",
-                            "type": "server",
-                            "children": [
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
                                 {
-                                    "name": "web-server",
-                                    "type": "software",
+                                    "name": "Web Page",
+                                    "type": "website",
                                     "children": [
                                         {
-                                            "name": "application",
-                                            "type": "software",
-                                            "connectToDB": true
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "app-server1",
-                            "type": "server",
-                            "children": [
-                                {
-                                    "name": "web-server1",
-                                    "type": "software",
-                                    "children": [
-                                        {
-                                            "name": "application1",
-                                            "type": "software",
-                                            "connectToDB": true
+                                            "name": "reverse-proxy",
+                                            "type": "server",
+                                            "children": [
+                                                {
+                                                    "name": "app-server",
+                                                    "type": "server",
+                                                    "children": [
+                                                        {
+                                                            "name": "web-server",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "application",
+                                                                    "type": "software",
+                                                                    "connectToDB": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "app-server1",
+                                                    "type": "server",
+                                                    "children": [
+                                                        {
+                                                            "name": "web-server1",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "application1",
+                                                                    "type": "software",
+                                                                    "connectToDB": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -306,67 +502,89 @@
                 }
             ]
         }
+
         ,
-        
+
+
+
+
         {
             "page" : "multi-app-architecture-2",
 
-            "name": "Website",
-            "type": "website",
-            "children": [
+            "name": "Web Browser",
+            "type": "web-browser",
+            "children" : [
                 {
-                    "name": "reverse-proxy",
-                    "type": "server",
-                    "children": [
+                    "name": "Internet",
+                    "type": "internet",
+                    "children" : [
                         {
-                            "name": "app-server",
-                            "active" : true,
-                            "type": "server",
-                            "children": [
+                            "name": "Web Page",
+                            "type": "website",
+                            "children" : [
                                 {
-                                    "name": "web-server",
-                                    "type": "software",
+                                    "name": "Web Page",
+                                    "type": "website",
                                     "children": [
                                         {
-                                            "name": "application",
-                                            "type": "software",
-                                            "connectToDB": true
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "app-server1",
-                            "type": "server",
-                            "active" : true,
-                            "children": [
-                                {
-                                    "name": "web-server1",
-                                    "type": "software",
-                                    "children": [
-                                        {
-                                            "name": "application1",
-                                            "type": "software",
-                                            "connectToDB": true
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "app-server2",
-                            "type": "server",
-                            "active" : true,
-                            "children": [
-                                {
-                                    "name": "web-server2",
-                                    "type": "software",
-                                    "children": [
-                                        {
-                                            "name": "application2",
-                                            "type": "software",
-                                            "connectToDB": true
+                                            "name": "reverse-proxy",
+                                            "type": "server",
+                                            "children": [
+                                                {
+                                                    "name": "app-server",
+                                                    "active" : true,
+                                                    "type": "server",
+                                                    "children": [
+                                                        {
+                                                            "name": "web-server",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "application",
+                                                                    "type": "software",
+                                                                    "connectToDB": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "app-server1",
+                                                    "type": "server",
+                                                    "active" : true,
+                                                    "children": [
+                                                        {
+                                                            "name": "web-server1",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "application1",
+                                                                    "type": "software",
+                                                                    "connectToDB": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "app-server2",
+                                                    "type": "server",
+                                                    "active" : true,
+                                                    "children": [
+                                                        {
+                                                            "name": "web-server2",
+                                                            "type": "software",
+                                                            "children": [
+                                                                {
+                                                                    "name": "application2",
+                                                                    "type": "software",
+                                                                    "connectToDB": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -376,5 +594,6 @@
                 }
             ]
         }
+
     ]
 }

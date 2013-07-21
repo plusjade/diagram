@@ -3,5 +3,6 @@
   Notice it is now <em>necessary</em> to have a dedicated database-server because it is the only way to have persistent data across all app-servers.
 </p>
 <p>
-  This solves the case where a user's request will be handled by app1 first, then another request is handled by app2; we want his data to be the same in both situations.
+  This solves the case where a user's request will be handled by app1 first, then another request by the same user is handled by app2. 
+  The data should be the same across both request scenarios.
 </p>

@@ -1,21 +1,24 @@
 <h3>Reverse Proxy</h3>
 <p>
-  Another options for handling more requests is to use a <strong>reverse-proxy server</strong>
+  A dedicated app-server can handle <em>more</em> requests but ultimately still has physical limits.
+  Generally, the more concurrent requests a server has the slower <em>each</em> request will be.
 </p>
-<p>
-  We introduce the reverse-proxy <em>before</em> our application-server. Now requests to our website
-  go directly to the reverse-proxy <em>not</em> our app-server.
-</p>
-
-<p>The reverse-proxy runs its own web-server software but it is configured to route requests to <em>other servers</em>.
 
 <p>
-  This implies we can add multiple app-servers and have our reverse-proxy distribute requests to them.
+  If one app-server can handle 1,000 requests, then two app-servers can handle 2,000 requests.
+  It's possible to add additional app-servers to share the request load.
 </p>
 
-<p>This is called scaling <em>horizontally</em>...</p>
+<p>
+  To do this we first need to add a <strong>reverse-proxy server</strong> that can delegate or <em>proxy</em> the requests across multiple app-servers.
+</p>
 
-Links
+<p>
+  The reverse-proxy is inserted <em>before</em> our app-server so requests go directly to the reverse-proxy.
+  The reverse-proxy runs its own web-server software but it is configured to route requests to <em>other servers</em>.
+</p>
+
+[Links]
 <p>
   <a href="http://stackoverflow.com/a/366212/101940">http://stackoverflow.com/a/366212/101940</a>
 </p>

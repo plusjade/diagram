@@ -1,13 +1,17 @@
 <h3>Web Application</h3>
 <p>
-  Serving static files from the filesystem is really fast but it does not scale.
+  Serving files from the filesystem is really fast but makes it hard to serve <em>dynamic</em> content.
 </p>
+
 <p>
   Consider that amazon.com displays millions of products; creating millions of static files would take forever and be hard to maintain.
 </p>
 
 <p>
-  Instead the web-server can be configured to serve an <strong>application</strong> instead of static files.
-  An application (web-app) is a software program that responds to web requests (sent from the web-server).
-  An application generates <em>dynamic</em> responses based on the input you feed into it.
+  Instead the web-server can serve an <strong>application</strong> (web-app) rather than files.
+  The web-server routes the web-request to the web-application software program.
+</p>
+
+<p>
+  An application can still interact with the filesystem but it can manipulate the content to generate <em>dynamic</em> responses for per individual request.
 </p>
