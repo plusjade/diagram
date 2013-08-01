@@ -198,6 +198,10 @@ svg {
   line-height: 1.3em;
 }
 
+#description a {
+  color: green;
+  text-decoration: underline;
+}
 #start {
   padding:5px;
   background-color: #333;

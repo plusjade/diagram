@@ -186,6 +186,8 @@ function viewOut() {
 }
 
 function showPage(name) {
+    World.description.selectAll('div').html('<strong>Loading...</strong>');
+
     d3.html("/pages/" + name + ".html?" + Math.random(), function(rsp) {
         if(rsp) {
             World.description.selectAll('div').remove();
