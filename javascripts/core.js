@@ -254,13 +254,23 @@ function update(root, data) {
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
 
-    // fix this (adds nodes for every update)
-    World.serverDiagram.selectAll('g.web-browser').call(Style.webBrowser);
-    World.serverDiagram.selectAll('g.website').call(Style.website);
-    World.serverDiagram.selectAll('g.software').call(Style.software);
-    World.serverDiagram.selectAll('g.server').call(Style.servers);
-    World.serverDiagram.selectAll('g.internet').call(Style.internet);
     nodeEnter.call(Style.labels);
+
+    nodeEnter
+        .filter(function(d){ return d.type === 'web-browser' })
+        .call(Style.webBrowser)
+    nodeEnter
+        .filter(function(d){ return d.type === 'website' })
+        .call(Style.website)
+    nodeEnter
+        .filter(function(d){ return d.type === 'software' })
+        .call(Style.software)
+    nodeEnter
+        .filter(function(d){ return d.type === 'server' })
+        .call(Style.servers)
+    nodeEnter
+        .filter(function(d){ return d.type === 'internet' })
+        .call(Style.internet)
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
