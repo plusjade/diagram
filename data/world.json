@@ -11,24 +11,27 @@
 
             "name": "Web Browser",
             "type": "web-browser",
-            "active" : true
+            "active" : true,
+            "public" : true
         }
         ,
-
         {
             "page" : "website",
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
-                            "active" : true
+                            "active" : true,
+                            "public" : true
                         }
                     ]
                 }
@@ -40,19 +43,23 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children" : [
                                 {
                                     "name": "static-server",
                                     "type": "server",
-                                    "active" : true
+                                    "active" : true,
+                                    "public" : true
                                 }
                             ]
                         }
@@ -67,18 +74,22 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children" : [
                                 {
                                     "name": "static-server",
                                     "type": "server",
+                                    "public" : true,
                                     "children" : [
                                         {
                                             "name": "filesystem",
@@ -101,18 +112,22 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children": [
                                 {
                                     "name": "static-server",
                                     "type": "server",
+                                    "public" : true,
                                     "children": [
                                         {
                                             "name": "web-server",
@@ -143,18 +158,22 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children" : [
                                 {
                                     "name": "app-server",
                                     "type": "server",
+                                    "public" : true,
                                     "active" : true,
                                     "children": [
                                         {
@@ -193,18 +212,22 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children" : [
                                 {
                                     "name": "app-server",
                                     "type": "server",
+                                    "public" : true,
                                     "children": [
                                         {
                                             "name": "web-server",
@@ -242,18 +265,22 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children" : [
                                 {
                                     "name": "app-server",
                                     "type": "server",
+                                    "public" : true,
                                     "children": [
                                         {
                                             "name": "web-server",
@@ -286,18 +313,22 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children" : [
                                 {
                                     "name": "reverse-proxy",
                                     "type": "server",
+                                    "public" : true,
                                     "active" : true,
                                     "children": [
                                         {
@@ -338,18 +369,22 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children" : [
                                 {
                                     "name": "reverse-proxy",
                                     "type": "server",
+                                    "public" : true,
                                     "children": [
                                         {
                                             "name": "app-server",
@@ -405,18 +440,22 @@
 
             "name": "Web Browser",
             "type": "web-browser",
+            "public" : true,
             "children" : [
                 {
                     "name": "Internet",
                     "type": "internet",
+                    "public" : true,
                     "children" : [
                         {
                             "name": "Web Page",
                             "type": "website",
+                            "public" : true,
                             "children" : [
                                 {
                                     "name": "reverse-proxy",
                                     "type": "server",
+                                    "public" : true,
                                     "children": [
                                         {
                                             "name": "app-server",

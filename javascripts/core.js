@@ -2,7 +2,7 @@ var Style = {
     software : function(nodes) {
         return nodes
             .append("svg:circle")
-            .attr("r", 1e-6)
+            //.attr("r", '2em')
             .style("fill", 'lightsteelblue');
     }
 
@@ -10,8 +10,8 @@ var Style = {
         return nodes
             .append("svg:rect")
             .attr('class', 'rect')
-            .attr("height", 30)
-            .attr("width", 24)
+            .attr("height", 40)
+            .attr("width", 34)
     }
     ,internet : function(nodes) {
         return nodes.append('svg:g').attr('class', '_internet')
@@ -221,7 +221,6 @@ function showActive(active) {
         .attr("x2", -100)
         .attr("y1", 30)
         .attr("y2", 120)
-        .attr("stroke-dasharray", "3, 3")
     derpEnter.append('path')
         .attr("transform", "translate(-20,30) rotate(40 0 0)")
         .attr('d', d3.svg.symbol().type('triangle-up').size(180))
@@ -267,6 +266,7 @@ function update(root, data) {
     nodeEnter
         .filter(function(d){ return d.type === 'software' })
         .call(Style.software)
+
     nodeEnter
         .filter(function(d){ return d.type === 'server' })
         .call(Style.servers)
@@ -278,11 +278,13 @@ function update(root, data) {
     var nodeUpdate = node.transition()
         .duration(World.duration)
         .attr("transform", function(d) { 
-            return "translate(" + d.y + "," + d.x + ")";
+            var computed_x = (['server', 'website'].indexOf(d.type) > -1 ? (d.x-30) : d.x);
+
+            return "translate(" + d.y + "," + computed_x + ")";
         });
 
     nodeUpdate.select("circle")
-        .attr("r", 10)
+        .attr("r", 7)
         .style("fill", 'lightsteelblue')
 
 
@@ -340,15 +342,20 @@ function update(root, data) {
         .data(linkData, function(d) { return d.source.name + '.' + d.target.name; });
 
     // Enter any new links at the parent's previous position.
-    link.enter().insert("svg:path", "g")
+    var linkEnter = link.enter().insert("svg:path", "g")
         .attr("class", "link")
         .attr("d", function(d) {
             var o = {x: root.x0, y: root.y0};
             return World.diagonal({source: o, target: o});
         })
-        .transition()
-            .duration(World.duration)
-            .attr("d", World.diagonal);
+
+    linkEnter.transition()
+        .duration(World.duration)
+        .attr("d", World.diagonal);
+
+        linkEnter.filter(function(d) { 
+            return (d.source.public && d.target.public);
+        }).style('stroke-dasharray','none')
 
     // Transition links to their new position.
     link.transition()
@@ -390,7 +397,7 @@ function updateDatabase(data) {
     var nodeUpdate = node.transition()
         .duration(World.duration)
         .attr("transform", function(d) { 
-            return "translate(" + 0 + "," + d.x + ")";
+            return "translate(" + 0 + "," + (d.x-30) + ")";
         });
 
     nodeUpdate.select("text")
@@ -426,7 +433,12 @@ World.container = d3.select("#world").append("svg:svg")
 
 World.width = d3.select('svg').node().clientWidth;
 
-World.tree = d3.layout.tree().size([World.height, World.width]);
+World.tree = d3.layout.tree().size([World.height, World.width/2])
+    .separation(function (a, b) {
+        console.log('separation')
+         return 100;
+         return a.parent == b.parent ? 1 : 2;
+    })//.nodeSize([800,400])
 
 World.serverDiagram = World.container.append("svg:svg")
                         .attr('class', 'server-diagram')
