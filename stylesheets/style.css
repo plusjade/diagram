@@ -9,8 +9,8 @@ body {
 #world {
   position: relative;
   top:0;
-  left: 350px;
-  width:1050px;
+  left: 25%;
+  width:74%;
 }
 
 #chart, #header, #footer {
@@ -117,7 +117,7 @@ path.link {
 #navigation {
   position:absolute;
   top:0;
-  left:350px;
+  left:25%;
   list-style:none;
   margin:0;
   padding:0;
@@ -181,7 +181,7 @@ svg {
   position: absolute;
   top:0;
   left: 0;
-  width:350px;
+  width:25%;
   background-color: #F8F7EE;
 }
 
