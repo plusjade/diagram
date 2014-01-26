@@ -422,14 +422,24 @@ var World = {
 
 }
 
-World.container = d3.select("#world").append("svg:svg")
+World.wrap = d3.select("#world").append("svg:svg")
     .attr("width", '100%')
     .attr("height", World.height)
     .style('border', '1px solid')
     .style('background-color', "#FFF")
     .style('margin-top', '48px')
+
+World.container = World.wrap
     .append("svg:g")
         .attr("transform", "translate(" + 0 + "," + 0 + ")")
+        .style('background-color', "#ccc")
+
+World.wrap.call(d3.behavior.zoom().on("zoom", function(){
+    World.container.attr("transform",
+        "translate(" + d3.event.translate + ")"
+        + " scale(" + d3.event.scale + ")");
+}))
+
 
 World.width = d3.select('svg').node().clientWidth;
 
