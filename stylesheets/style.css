@@ -236,3 +236,11 @@ kbd {
     stroke: #ccc;
     stroke-width: 1;
   }
+
+
+#world > svg {
+  width: 100%;
+  border : 1px solid;
+  background-color: #FFF;
+  margin-top: 48px;
+}

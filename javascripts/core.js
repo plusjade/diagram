@@ -423,11 +423,7 @@ var World = {
 }
 
 World.wrap = d3.select("#world").append("svg:svg")
-    .attr("width", '100%')
     .attr("height", World.height)
-    .style('border', '1px solid')
-    .style('background-color', "#FFF")
-    .style('margin-top', '48px')
 
 World.container = World.wrap
     .append("svg:g")
