@@ -234,17 +234,77 @@ function showActive(active) {
     }
 }
 
-function update(root, data) {
-    // Compute the new tree layout.
-    var nodes = World.tree.nodes(data).reverse();
-    var active = [];
-    // Normalize for fixed-depth.
-    nodes.forEach(function(d) { 
-        d.y = d.depth * 100; // makes it so initial nodes don't take up the entire width
-        if (d.active) active.push(d);
+function buildGraph(data) {
+    var nodes = [];
+    var origin = 0;
+    var verticalOrigin = 300;
+    var spacing = 110;
+    var family = 0;
+
+    data.forEach(function(d, i) {
+        d.x = verticalOrigin;
+        d.y = (i * spacing) + origin;
+        d.family = family;
+
+        nodes.push(d);
+
+        if(d.branch) {
+            var branchCount = d.branch.length;
+            var offset = (spacing * (branchCount-1) / 2 );
+
+            // how much room to make for child branches?
+            // best guest for now: 
+            var length = d.branch[0].step.length;
+            origin += spacing*length;
+
+            d.branch.forEach(function(b) {
+                family += 1;
+
+                // connect first step to parent
+                b.step[0].parent = d;
+
+                // connect last step to parent's sibling (if convergent)
+                if(b.converge && data[i+1]) {
+                    b.step[b.step.length-1].parent = data[i+1];
+                }
+
+                b.step.forEach(function(sub, x) {
+                    sub.family = family;
+                    sub.x = d.x - offset;
+                    sub.y = d.y + ((x+1) * spacing);
+                    nodes.push(sub);
+                })
+                offset -= spacing;
+            })
+        }
     });
 
-    showPage(nodes[nodes.length-1].page);
+    return nodes;
+}
+
+function linksFromGraph(data) {
+    var nodes = [];
+
+    data.forEach(function(d, i) {
+        if(d.parent) {
+            nodes.push({ source: d, target: d.parent })
+        }
+        if(data[i+1] && d.family === data[i+1].family) {
+            nodes.push({ source: d, target: data[i+1] })
+        }
+    })
+
+    return nodes;
+}
+
+function update(root, data) {
+    var nodes = buildGraph(data);
+    var active = [];
+    nodes.forEach(function(d) {
+        if (d.active) active.push(d);
+    })
+
+    showPage(nodes[0].page);
 
     // Update the nodes
     var node = World.serverDiagram.selectAll("g.node")
@@ -295,7 +355,6 @@ function update(root, data) {
         .style("fill-opacity", 1);
 
 
-    // Transition exiting nodes to the parent's new position.
     var nodeExit = node.exit().transition()
         .duration(World.duration)
         .style("fill-opacity", 0)
@@ -306,34 +365,8 @@ function update(root, data) {
 
 
 
-
     // LINKING DATA
-    var linkData = World.tree.links(nodes);
-
-
-    // add database links if needed
-    var hasDb = false;
-    nodeUpdate.each(function(d) {
-        if(d.connectToDB) { hasDb = true; return }
-    })
-
-    if(hasDb) {
-        updateDatabase([World.databaseData]);
-
-        // hack to point to the db if no other active
-        if(active.length === 0)
-            active.push(World.databaseData)
-
-        nodeUpdate.filter(function(d) { return !!d.connectToDB; })
-            .each(function(d) {
-                linkData.push({
-                    source: d,
-                    target: World.serverDiagram.selectAll("g.db").datum()
-                })
-            })
-    } 
-    else
-        updateDatabase([])
+    var linkData = linksFromGraph(nodes);
 
 
     // Update the links…
@@ -375,39 +408,6 @@ function update(root, data) {
     });
 
     showActive(active);
-}
-
-function updateDatabase(data) {
-    var node = World.databaseDiagram.selectAll("g.db")
-        .data(data, function(d) { return d.name });
-
-    // Enter any new nodes at the parent's previous position.
-    var nodeEnter = node.enter().append("svg:g")
-        .attr('class', function(d){ 
-            return 'db ' + d.type
-        })
-        .attr("transform", function(d) { 
-            return "translate(" + d.y + "," + d.x + ")";
-        })
-
-    World.databaseDiagram.selectAll('g.server').call(Style.servers);
-    nodeEnter.call(Style.labels);
-
-    // Transition nodes to their new position.
-    var nodeUpdate = node.transition()
-        .duration(World.duration)
-        .attr("transform", function(d) { 
-            return "translate(" + 0 + "," + (d.x-30) + ")";
-        });
-
-    nodeUpdate.select("text")
-        .attr('dx', 5)
-        .style("fill-opacity", 1);
-
-    node.exit().transition()
-        .duration(World.duration)
-        .style("fill-opacity", 0)
-        .remove();
 }
 
 //---------------------------------------------------
@@ -455,26 +455,61 @@ World.serverDiagram = World.container.append("svg:svg")
 World.description = d3.select("#description")
                         .style("height", World.height + 'px')
 
-World.databaseDiagram = World.serverDiagram.append('svg:g')
-                        .attr('class', 'database-diagram')
-                        .attr("transform", "translate(" + 950 + "," + 0 + ")")
+var Parse = {
+    parseLinearDataFormat : function(data) {
+        var self = this;
+        var output = [];
+        data.forEach(function(node) {
+            if(node.step) {
+                var step = self.coerceItems(node.step);
 
-//World.internet = Draw.internet(World.container);
+                delete node.step;
+                for(attribute in node) {
+                    step[0][attribute] = node[attribute];
+                }
 
-//World.client = Draw.client(World.container);
+                step.forEach(function(sub) {
+                    if(sub.branch) {
+                        sub.branch.forEach(function(b) {
+                            b.step = self.coerceItems(b.step);
+                        })
+                    }
+                })
+                output.push(step);
+            }
+        })
+
+        return output;
+    }
+    ,
+    coerceItems : function(data) {
+        var self = this;
+        var output = [];
+        data.forEach(function(node) {
+            var d = {};
+            for(attribute in self.items[node.item]) {
+                d[attribute] = self.items[node.item][attribute]
+            }
+            for(attribute in node) {
+                d[attribute] = node[attribute];
+            }
+
+            output.push(d);
+        })
+
+        return output;
+    }
+}
 
 function startServer() {
     d3.json("/data/world.json?" + Math.random(), function(data) {
 
-        World.data = data.world;
-        World.data[0].x0 = World.height / 2;
-        World.data[0].y0 = 0;
+        Parse.items = data.items;
 
-        World.databaseData = data.database;
-        World.databaseData.x = World.height / 2;
-        World.databaseData.y = 950;
-        World.databaseData.x0 = World.databaseData.x;
-        World.databaseData.y0 = World.databaseData.y;
+        World.data = Parse.parseLinearDataFormat(data.world);
+
+        World.data[0][0].x0 = World.height / 2;
+        World.data[0][0].y0 = 0;
 
         update(World.data[0], World.data[0]);
         Navigation.render();
