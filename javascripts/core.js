@@ -117,24 +117,7 @@ var Navigation = {
         if (index < 0) index = World.data.length-1;
         if (index > World.data.length-1) index = 0;
 
-        // click start on initial starting position
-        if(index === 0 && !World.isServerDiagraminView)
-            viewIn().each('end', function(){ 
-                self._navigate(1)
-            })
-        // click a step on initial start.
-        else if(index > 0 && !World.isServerDiagraminView)
-            viewIn().each('end', function(){
-                self._navigate(index)
-            });
-        // click start when in process (start over)
-        else if(index === 0 && World.isServerDiagraminView) {
-            self._navigate(0);
-            viewOut();
-        }
-        // click a step when in process
-        else
-           self._navigate(index);
+        self._navigate(index);
     }
 
     // Internal. Prgramatically navigate to step at index.
@@ -160,29 +143,6 @@ var Navigation = {
             .classed('active', false)
             .filter(':nth-child('+ (index+1) +')').classed('active', true);
     }
-}
-
-function viewIn(){
-    World.isServerDiagraminView = true;
-    // World.internet.selectAll('text')
-    //     .transition()
-    //     .duration(1000)
-    //     .attr("transform", "translate(70, 0)")
-
-    return  World.container.transition()
-            .duration(1000)
-            .attr("transform", "translate("+ (-(World.width/2)) +", 0)")
-}
-function viewOut() {
-    World.isServerDiagraminView = false;
-    // World.internet.selectAll('text')
-    //     .transition()
-    //     .duration(1000)
-    //     .attr("transform", "translate(0, 0)")
-
-    return  World.container.transition()
-            .duration(1000)
-            .attr("transform", "translate(0, 0)")
 }
 
 function showPage(name) {
@@ -408,6 +368,19 @@ function update(root, data) {
     });
 
     showActive(active);
+
+    // FIXME: should not be a timeout
+    // reposition logic
+    setTimeout(function() {
+        console.log("reposition")
+        var dimensions = World.serverDiagram.node().getBBox();
+        var offset = (d3.select('svg').node().clientWidth - dimensions.width)/2;
+        if(offset > 0) {
+            World.serverDiagram.transition()
+                .duration(World.duration)
+                .attr('x', offset)
+        }
+    }, 1000)
 }
 
 //---------------------------------------------------
@@ -448,9 +421,9 @@ World.tree = d3.layout.tree().size([World.height, World.width/2])
 
 World.serverDiagram = World.container.append("svg:svg")
                         .attr('class', 'server-diagram')
-                        .attr('x', World.width/2)
+                        .attr('x', 0)
                         .attr('y', 0)
-                        .attr('transform', "translate(50, 0)")
+                        .attr('transform', "translate(0, 0)")
 
 World.description = d3.select("#description")
                         .style("height", World.height + 'px')
