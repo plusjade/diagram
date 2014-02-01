@@ -194,53 +194,75 @@ function showActive(active) {
     }
 }
 
-function buildGraph(data) {
-    var nodes = [];
+var Build = function() {
     var origin = 0;
     var verticalOrigin = 300;
     var spacing = 110;
     var family = 0;
 
-    data.forEach(function(d, i) {
-        d.x = verticalOrigin;
-        d.y = (i * spacing) + origin;
-        d.family = family;
+    // Build the graph based on the custom data format.
+    // This means determing x and y coordinates relative to the nodes.
+    function graph(data) {
+        origin = 0;
+        var nodes = [];
+        data.forEach(function(d, i) {
+            d.family = family;
+            d.x = verticalOrigin;
+            d.y = (i * spacing) + origin;
 
-        nodes.push(d);
+            nodes.push(d);
 
-        if(d.branch) {
-            var branchCount = d.branch.length;
-            var offset = (spacing * (branchCount-1) / 2 );
+            if(d.branch) {
+                nodes = nodes.concat(processBranch(d, data[i+1]));
+            }
+        });
 
-            // how much room to make for child branches?
-            // best guest for now: 
-            var length = d.branch[0].step.length;
-            origin += spacing*length;
+        return nodes;
+    }
 
-            d.branch.forEach(function(b) {
-                family += 1;
+    function processBranch(node, neighbor) {
+        var children = [];
+        var offset = (spacing * (node.branch.length-1) / 2 );
 
-                // connect first step to parent
-                b.step[0].parent = d;
+        // how much room to make for child branches?
+        // best guest for now: 
+        var length = node.branch[0].step.length;
+        origin += spacing*length;
 
-                // connect last step to parent's sibling (if convergent)
-                if(b.converge && data[i+1]) {
-                    b.step[b.step.length-1].parent = data[i+1];
+        node.branch.forEach(function(b) {
+            family += 1;
+
+            // connect first step to parent
+            b.step[0].parent = node;
+
+            // connect last step to parent's sibling (if convergent)
+            if(b.converge && neighbor) {
+                b.step[b.step.length-1].parent = neighbor;
+            }
+
+            b.step.forEach(function(sub, x) {
+                sub.family = family;
+                sub.x = node.x - offset;
+                sub.y = node.y + ((x+1) * spacing);
+
+                children.push(sub);
+                if(sub.branch) {
+                    children = children.concat(processBranch(sub, b[x+1]));
                 }
 
-                b.step.forEach(function(sub, x) {
-                    sub.family = family;
-                    sub.x = d.x - offset;
-                    sub.y = d.y + ((x+1) * spacing);
-                    nodes.push(sub);
-                })
-                offset -= spacing;
             })
-        }
-    });
+            offset -= spacing;
+        })
 
-    return nodes;
-}
+        return children;
+    }
+
+    // Public API
+    return {
+        graph : graph
+    };
+}();
+
 
 function linksFromGraph(data) {
     var nodes = [];
@@ -258,7 +280,7 @@ function linksFromGraph(data) {
 }
 
 function update(root, data) {
-    var nodes = buildGraph(data);
+    var nodes = Build.graph(data);
     var active = [];
     nodes.forEach(function(d) {
         if (d.active) active.push(d);
