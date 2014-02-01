@@ -431,31 +431,33 @@ World.description = d3.select("#description")
 var Parse = {
     parseLinearDataFormat : function(data) {
         var self = this;
-        var output = [];
-        data.forEach(function(node) {
-            if(node.step) {
-                var step = self.coerceItems(node.step);
-
-                delete node.step;
-                for(attribute in node) {
-                    step[0][attribute] = node[attribute];
-                }
-
-                step.forEach(function(sub) {
-                    if(sub.branch) {
-                        sub.branch.forEach(function(b) {
-                            b.step = self.coerceItems(b.step);
-                        })
-                    }
-                })
-                output.push(step);
-            }
+        return data.map(function(node) {
+            return self.processSteps(node)
         })
-
-        return output;
     }
     ,
-    coerceItems : function(data) {
+    processSteps : function(node) {
+        var self = this;
+
+        // Expand and aggregate the step item data.
+        var steps = self.expandItems(node.step);
+        for(attribute in node) {
+            steps[0][attribute] = node[attribute];
+        }
+
+        // Recursively evaulate any branches with sub-steps.
+        steps.forEach(function(sub) {
+            if(!sub.branch) return;
+
+            sub.branch.forEach(function(b) {
+                b.step = self.processSteps(b);
+            })
+        })
+
+        return steps;
+    }
+    ,
+    expandItems : function(data) {
         var self = this;
         var output = [];
         data.forEach(function(node) {
