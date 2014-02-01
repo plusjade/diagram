@@ -46,7 +46,7 @@ var Style = {
             .attr("text-anchor", function(d) { 
                 return "middle";
             })
-            .text(function(d) { return d.name; })
+            .text(function(d) { return d.name + "-"  + d.depth + " " + d.stepFamily; })
             .style("fill-opacity", 1e-6);
     }
 }
@@ -105,20 +105,22 @@ var Parse = {
     parseLinearDataFormat : function(data) {
         var self = this;
         return data.map(function(node) {
-            return self.processSteps(node)
+            return self.processSteps(node, 0);
         })
     }
     ,
-    processSteps : function(node) {
+    processSteps : function(node, depth) {
         var self = this;
         var steps = self.expandItems(node.step);
 
         // Recursively evaulate any branches with sub-steps.
         steps.forEach(function(sub) {
+            sub.depth = depth;
+
             if(!sub.branch) return;
 
             sub.branch.forEach(function(b) {
-                b.step = self.processSteps(b);
+                b.step = self.processSteps(b, depth+1);
             })
         })
 
@@ -166,13 +168,13 @@ function showActive(active) {
     var derpEnter = derp.enter().append('svg:g')
         .attr('class', 'active')
         .attr("transform", function(d) {
-            return "translate(" + (yold || d.y) + "," + (xold || d.x) + ")"
+            return "translate(" + (xold || d.x) + "," + (yold || d.y) + ")"
         })
 
     var derpUpdate = derp.transition()
         .duration(World.duration)
         .attr("transform", function(d) { 
-            return "translate(" + d.y + "," + d.x + ")";
+            return "translate(" + d.x + "," + d.y + ")";
         })
 
     derpEnter.append("line")
@@ -195,19 +197,21 @@ function showActive(active) {
 
 var Build = function() {
     var origin = 0;
-    var verticalOrigin = 300;
-    var spacing = 110;
-    var family = 0;
+    var spacing = 140;
+    var stepFamily = 0;
 
     // Build the graph based on the custom data format.
     // This means determing x and y coordinates relative to the nodes.
     function graph(data) {
         origin = 0;
+        stepFamily = 0;
         var nodes = [];
+
         data.forEach(function(d, i) {
-            d.family = family;
-            d.x = verticalOrigin;
-            d.y = (i * spacing) + origin;
+            d.stepFamily = stepFamily;
+            d._id = d.name + '.' + d.stepFamily;
+            d.x = (i * spacing) + origin;
+            d.y = World.height/2;
 
             nodes.push(d);
 
@@ -223,10 +227,14 @@ var Build = function() {
         var nodes = [];
 
         data.forEach(function(d, i) {
+            // branches
             if(d.parent) {
                 nodes.push({ source: d, target: d.parent })
             }
-            if(data[i+1] && d.family === data[i+1].family) {
+            // steps
+            var sig1 = d.stepFamily + d.depth;
+            var sig2 = data[i+1] ? data[i+1].stepFamily + data[i+1].depth : null;
+            if(data[i+1] && sig1 === sig2) {
                 nodes.push({ source: d, target: data[i+1] })
             }
         })
@@ -238,30 +246,31 @@ var Build = function() {
         var children = [];
         var offset = (spacing * (node.branch.length-1) / 2 );
 
-        // how much room to make for child branches?
-        // best guest for now: 
-        var length = node.branch[0].step.length;
-        origin += spacing*length;
-
         node.branch.forEach(function(b) {
-            family += 1;
+            stepFamily += 1;
 
             // connect first step to parent
             b.step[0].parent = node;
 
-            // connect last step to parent's sibling (if convergent)
-            if(b.converge && neighbor) {
-                b.step[b.step.length-1].parent = neighbor;
-            }
+            b.step.forEach(function(step, x) {
 
-            b.step.forEach(function(sub, x) {
-                sub.family = family;
-                sub.x = node.x - offset;
-                sub.y = node.y + ((x+1) * spacing);
+                // connect step to parent's sibling if convergent
+                if(step.converge && neighbor) {
+                    step.parent = neighbor;
+                }
 
-                children.push(sub);
-                if(sub.branch) {
-                    children = children.concat(processBranch(sub, b[x+1]));
+                step.stepFamily = stepFamily;
+                step._id = step.name + '.' + step.stepFamily;
+                step.x = node.x + ((x+1) * spacing);
+                step.y = node.y - offset;
+
+                children.push(step);
+
+                if(step.branch) {
+                    var stepChildren = processBranch(step, b.step[x+1]);
+
+                    console.log(stepChildren.length)
+                    children = children.concat(stepChildren);
                 }
 
             })
@@ -290,12 +299,14 @@ function update(root, data) {
 
     // Update the nodes
     var node = World.serverDiagram.selectAll("g.node")
-        .data(nodes, function(d) { return d.name });
+        .data(nodes, function(d) { 
+            return d._id;
+        });
 
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append("svg:g")
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
-        .attr("transform", function(d) { return "translate(" + root.y0 + "," + root.x0 + ")"; })
+        .attr("transform", function(d) { return "translate(" + root.x0 + "," + root.y0 + ")"; })
 
     nodeEnter.call(Style.labels);
 
@@ -320,9 +331,9 @@ function update(root, data) {
     var nodeUpdate = node.transition()
         .duration(World.duration)
         .attr("transform", function(d) { 
-            var computed_x = (['server', 'website'].indexOf(d.type) > -1 ? (d.x-30) : d.x);
+            var computed_y = (['server', 'website'].indexOf(d.type) > -1 ? (d.y-30) : d.y);
 
-            return "translate(" + d.y + "," + computed_x + ")";
+            return "translate(" + d.x + "," + computed_y + ")";
         });
 
     nodeUpdate.select("circle")
@@ -354,7 +365,7 @@ function update(root, data) {
     // Update the links…
     var link = World.serverDiagram.selectAll("path.link")
         //.data(linkData)
-        .data(linkData, function(d) { return d.source.name + '.' + d.target.name; });
+        .data(linkData, function(d) { return d.source._id + '.' + d.target._id; });
 
     // Enter any new links at the parent's previous position.
     var linkEnter = link.enter().insert("svg:path", "g")
@@ -413,7 +424,7 @@ var World = {
     ,isServerDiagraminView : false
     ,duration : 500
     ,diagonal : d3.svg.diagonal()
-                    .projection(function(d) { return [d.y, d.x]; })
+                    .projection(function(d) { return [d.x, d.y]; })
 
 }
 
@@ -456,10 +467,10 @@ function startServer() {
 
         Parse.items = data.items;
 
-        World.data = Parse.parseLinearDataFormat(data.world);
+        World.data = Parse.parseLinearDataFormat([data.world[0]]);
 
-        World.data[0][0].x0 = World.height / 2;
-        World.data[0][0].y0 = 0;
+        World.data[0][0].x0 = 0;
+        World.data[0][0].y0 = World.height / 2;
 
         update(World.data[0], World.data[0]);
         Navigation.render();
