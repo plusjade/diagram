@@ -44,54 +44,10 @@ var Style = {
             .append("svg:text")
             .attr("dy", "-1em")
             .attr("text-anchor", function(d) { 
-                return "start";
+                return "middle";
             })
             .text(function(d) { return d.name; })
             .style("fill-opacity", 1e-6);
-    }
-}
-
-var Draw = {
-    internet : function(container) {
-        var node = container.append('svg:g').attr('class', 'internet');
-        node.append("line")
-            .attr("x1", '50%')
-            .attr("x2", '50%')
-            .attr("y1", '100%')
-        node.append('svg:text')
-            .text("Public Internet")
-            .attr('class', 'background')
-            .attr('x', '50%')
-            .attr('text-anchor', 'middle')
-            .attr('dy', '1.5em')
-        node.append('svg:text')
-            .text("Public Internet")
-            .attr('class', 'foreground')
-            .attr('x', '50%')
-            .attr('text-anchor', 'middle')
-            .attr('dy', '1.5em')
-
-        return node;
-    }
-
-    ,client : function(container) {
-        var node = container.append('svg:svg')
-            .attr('x', "50%")
-            .attr('y', "50%")
-            .attr('class', 'client')
-        node.append('svg:rect')
-            .attr('transform', "translate(-74,0)")
-            .attr("height", 30)
-            .attr("width", 24)
-            .style("fill", 'red');
-        node.append('svg:text')
-            .attr('transform', "translate(-80,-2)")
-            .text("Web Browser")
-            .style('font-size', 14)
-            .attr('text-anchor', 'end')
-            .attr('dy', '1.5em')
-
-        return node;
     }
 }
 
