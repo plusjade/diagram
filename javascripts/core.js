@@ -101,6 +101,54 @@ var Navigation = {
     }
 }
 
+var Parse = {
+    parseLinearDataFormat : function(data) {
+        var self = this;
+        return data.map(function(node) {
+            return self.processSteps(node)
+        })
+    }
+    ,
+    processSteps : function(node) {
+        var self = this;
+
+        // Expand and aggregate the step item data.
+        var steps = self.expandItems(node.step);
+        for(attribute in node) {
+            steps[0][attribute] = node[attribute];
+        }
+
+        // Recursively evaulate any branches with sub-steps.
+        steps.forEach(function(sub) {
+            if(!sub.branch) return;
+
+            sub.branch.forEach(function(b) {
+                b.step = self.processSteps(b);
+            })
+        })
+
+        return steps;
+    }
+    ,
+    expandItems : function(data) {
+        var self = this;
+        var output = [];
+        data.forEach(function(node) {
+            var d = {};
+            for(attribute in self.items[node.item]) {
+                d[attribute] = self.items[node.item][attribute]
+            }
+            for(attribute in node) {
+                d[attribute] = node[attribute];
+            }
+
+            output.push(d);
+        })
+
+        return output;
+    }
+}
+
 function showPage(name) {
     World.description.selectAll('div').html('<strong>Loading...</strong>');
 
@@ -406,53 +454,6 @@ World.serverDiagram = World.container.append("svg:svg")
 World.description = d3.select("#description")
                         .style("height", World.height + 'px')
 
-var Parse = {
-    parseLinearDataFormat : function(data) {
-        var self = this;
-        return data.map(function(node) {
-            return self.processSteps(node)
-        })
-    }
-    ,
-    processSteps : function(node) {
-        var self = this;
-
-        // Expand and aggregate the step item data.
-        var steps = self.expandItems(node.step);
-        for(attribute in node) {
-            steps[0][attribute] = node[attribute];
-        }
-
-        // Recursively evaulate any branches with sub-steps.
-        steps.forEach(function(sub) {
-            if(!sub.branch) return;
-
-            sub.branch.forEach(function(b) {
-                b.step = self.processSteps(b);
-            })
-        })
-
-        return steps;
-    }
-    ,
-    expandItems : function(data) {
-        var self = this;
-        var output = [];
-        data.forEach(function(node) {
-            var d = {};
-            for(attribute in self.items[node.item]) {
-                d[attribute] = self.items[node.item][attribute]
-            }
-            for(attribute in node) {
-                d[attribute] = node[attribute];
-            }
-
-            output.push(d);
-        })
-
-        return output;
-    }
-}
 
 function startServer() {
     d3.json("/data/world.json?" + Math.random(), function(data) {
