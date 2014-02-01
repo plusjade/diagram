@@ -224,6 +224,21 @@ var Build = function() {
         return nodes;
     }
 
+    function links(data) {
+        var nodes = [];
+
+        data.forEach(function(d, i) {
+            if(d.parent) {
+                nodes.push({ source: d, target: d.parent })
+            }
+            if(data[i+1] && d.family === data[i+1].family) {
+                nodes.push({ source: d, target: data[i+1] })
+            }
+        })
+
+        return nodes;
+    }
+
     function processBranch(node, neighbor) {
         var children = [];
         var offset = (spacing * (node.branch.length-1) / 2 );
@@ -263,25 +278,11 @@ var Build = function() {
 
     // Public API
     return {
-        graph : graph
+        graph : graph,
+        links : links
     };
 }();
 
-
-function linksFromGraph(data) {
-    var nodes = [];
-
-    data.forEach(function(d, i) {
-        if(d.parent) {
-            nodes.push({ source: d, target: d.parent })
-        }
-        if(data[i+1] && d.family === data[i+1].family) {
-            nodes.push({ source: d, target: data[i+1] })
-        }
-    })
-
-    return nodes;
-}
 
 function update(root, data) {
     var nodes = Build.graph(data);
@@ -352,7 +353,7 @@ function update(root, data) {
 
 
     // LINKING DATA
-    var linkData = linksFromGraph(nodes);
+    var linkData = Build.links(nodes);
 
 
     // Update the links…
