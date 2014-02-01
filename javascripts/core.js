@@ -111,12 +111,7 @@ var Parse = {
     ,
     processSteps : function(node) {
         var self = this;
-
-        // Expand and aggregate the step item data.
         var steps = self.expandItems(node.step);
-        for(attribute in node) {
-            steps[0][attribute] = node[attribute];
-        }
 
         // Recursively evaulate any branches with sub-steps.
         steps.forEach(function(sub) {

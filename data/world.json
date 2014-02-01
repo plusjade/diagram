@@ -82,9 +82,9 @@
 
     "world": [
         {
-            "page" : "web-browser",
             "step" : [
                 {
+                    "page" : "web-browser",
                     "item" : "web-browser",
                     "active" : true
                 }
@@ -92,9 +92,9 @@
         }
         ,
         {
-            "page" : "website",
             "step" : [
                 {
+                    "page" : "website",
                     "item": "web-browser"
                 },
                 {
@@ -108,10 +108,9 @@
         }
         ,
         {
-            "page" : "static-server",
-
             "step" : [
                 {
+                    "page" : "static-server",
                     "item": "web-browser"
                 },
                 {
@@ -127,12 +126,10 @@
             ]
         }
         ,
-
         {
-            "page" : "filesystem",
-
             "step" : [
                 {
+                    "page" : "filesystem",
                     "item": "web-browser"
                 },
                 {
@@ -153,9 +150,9 @@
         ,
 
         {
-            "page" : "web-server",
             "step" : [
                 {
+                    "page" : "web-server",
                     "item": "web-browser"
                 },
                 {
@@ -181,12 +178,10 @@
 
         ,
 
-
         {
-            "page" : "web-application",
-
             "step" : [
                 {
+                    "page" : "web-application",
                     "item": "web-browser"
                 },
                 {
@@ -217,10 +212,9 @@
         ,
 
         {
-            "page" : "database",
-
             "step" : [
                 {
+                    "page" : "database",
                     "item": "web-browser"
                 },
                 {
@@ -250,9 +244,9 @@
         ,
 
         {
-            "page" : "dedicated-database",
             "step" : [
                 {
+                    "page" : "dedicated-database",
                     "item": "web-browser"
                 },
                 {
@@ -282,9 +276,9 @@
         ,
 
         {
-            "page" : "reverse-proxy",
             "step" : [
                 {
+                    "page" : "reverse-proxy",
                     "item": "web-browser"
                 },
                 {
@@ -318,9 +312,9 @@
         ,
 
         {
-            "page" : "multi-app-architecture",
             "step" : [
                 {
+                    "page" : "multi-app-architecture",
                     "item": "web-browser"
                 },
                 {
@@ -334,9 +328,9 @@
                     "active" : true,
                     "branch" : [
                         {
-                            "name" : "app-server",
                             "step" : [
                                 {
+                                    "name" : "app-server",
                                     "item": "static-server"
                                 },
                                 {
@@ -350,7 +344,6 @@
                         }
                         ,
                         {
-                            "name" : "app-server-2",
                             "step" : [
                                 {
                                     "item": "static-server",
@@ -378,9 +371,9 @@
         ,
 
         {
-            "page" : "multi-app-architecture",
             "step" : [
                 {
+                    "page" : "multi-app-architecture",
                     "item": "web-browser"
                 },
                 {
@@ -394,9 +387,9 @@
                     "active" : true,
                     "branch" : [
                         {
-                            "name" : "app-server",
                             "step" : [
                                 {
+                                    "name" : "app-server",
                                     "item": "static-server"
                                 },
                                 {
@@ -411,9 +404,9 @@
                         }
                         ,
                         {
-                            "name" : "app-server-2",
                             "step" : [
                                 {
+                                    "name" : "app-server-2",
                                     "item": "static-server",
                                     "name" : "static2"
                                 },
@@ -430,9 +423,9 @@
                         }
                         ,
                         {
-                            "name" : "app-server-3",
                             "step" : [
                                 {
+                                    "name" : "app-server-3",
                                     "item": "static-server",
                                     "name" : "static3"
                                 },
@@ -449,11 +442,10 @@
                         }
                         ,
                         {
-                            "name" : "app-server-4",
                             "step" : [
                                 {
-                                    "item": "static-server",
-                                    "name" : "static5"
+                                    "name" : "app-server-4",
+                                    "item": "static-server"
                                 },
                                 {
                                     "item": "web-server",
