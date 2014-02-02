@@ -192,12 +192,13 @@ var Build = function() {
     var origin = 0;
     var spacing = 140;
     var stepFamily = 0;
-    var offset = 0;
+    var verticalOffset = 0;
 
     // Build the graph based on the custom data format.
     // This means determing x and y coordinates relative to the nodes.
     function graph(data) {
-        return processSteps({ step: [data[0]] }, null, null);
+        stepFamily = 0;
+        return processSteps({ step: data }, null, null);
     }
 
     function links(data) {
@@ -223,11 +224,11 @@ var Build = function() {
     // even if the step itself branches out.
     function processBranch(node, neighbor) {
         var children = [];
-        offset = (spacing * (node.branch.length-1) / 2 );
+        verticalOffset = (spacing * (node.branch.length-1) / 2 );
 
         node.branch.forEach(function(branch) {
             children = children.concat(processSteps(branch, node, neighbor));
-            offset -= spacing;
+            verticalOffset -= spacing;
         })
 
         return children;
@@ -241,15 +242,24 @@ var Build = function() {
         branch.step[0].parent = parent;
 
         branch.step.forEach(function(step, i) {
+            var previousX = branch.step[i-1]
+                                ? branch.step[i-1].x 
+                                : (parent ? parent.x : 0 );
+            var previousY = branch.step[i-1] 
+                                ? branch.step[i-1].y 
+                                : (parent ? (parent.y - verticalOffset) : World.height/2);
+            if(!step.x) step.x = previousX + spacing;
+            if(!step.y) step.y = previousY;
+            if(parent && neighbor) neighbor.y = parent.y;
+            if(neighbor) neighbor.x = step.x + spacing;
+
+            step.stepFamily = stepFamily;
+            step._id = step.name + '.' + step.stepFamily;
+
             // connect step to parent's sibling if convergent
             if(step.converge && neighbor) {
                 step.parent = neighbor;
             }
-
-            step.stepFamily = stepFamily;
-            step._id = step.name + '.' + step.stepFamily;
-            step.x = (parent ? parent.x : 0) + ((i+1) * spacing);
-            step.y = parent ? (parent.y - offset) : World.height/2;
 
             children.push(step);
 
@@ -450,7 +460,7 @@ function startServer() {
 
         Parse.items = data.items;
 
-        World.data = Parse.parseLinearDataFormat([data.world[0]]);
+        World.data = Parse.parseLinearDataFormat(data.world);
 
         World.data[0][0].x0 = 0;
         World.data[0][0].y0 = World.height / 2;
