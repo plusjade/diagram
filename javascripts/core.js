@@ -15,16 +15,9 @@ var Style = {
     }
     ,internet : function(nodes) {
         return nodes.append('svg:g').attr('class', '_internet')
-            .append("line")
-                .attr("y1", '-50%')
-                .attr("y2", '50%')
-                .attr("stroke-dasharray", "3, 3")
-
-
-        return nodes
-            .append("svg:circle")
-            .attr("r", 1e-10)
-            .style("fill", '#333');
+            .append('path')
+            .attr('d', d3.svg.symbol().type('cross').size(400))
+            .style("fill", '#680148');
     }
     ,website : function(nodes) {
         return nodes
