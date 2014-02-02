@@ -330,35 +330,31 @@
                         {
                             "step" : [
                                 {
-                                    "name" : "app-server",
                                     "item": "static-server"
                                 },
                                 {
                                     "item": "web-server"
                                 },
                                 {
-                                    "item": "application"
+                                    "item": "application",
+                                    "converge" : true
                                 }
-                            ],
-                            "converge" : true
+                            ]
                         }
                         ,
                         {
                             "step" : [
                                 {
-                                    "item": "static-server",
-                                    "name" : "static2"
+                                    "item": "static-server"
                                 },
                                 {
-                                    "item": "web-server",
-                                    "name" : "web-server2"
+                                    "item": "web-server"
                                 },
                                 {
                                     "item": "application",
-                                    "name" : "application2"
+                                    "converge" : true
                                 }
-                            ],
-                            "converge" : true
+                            ]
                         }
                     ]
                 }
@@ -397,66 +393,55 @@
                                 }
                                 ,
                                 {
-                                    "item": "application"
-                                }
-                            ],
-                            "converge" : true
-                        }
-                        ,
-                        {
-                            "step" : [
-                                {
-                                    "name" : "app-server-2",
-                                    "item": "static-server",
-                                    "name" : "static2"
-                                },
-                                {
-                                    "item": "web-server",
-                                    "name" : "web-server2"
-                                },
-                                {
                                     "item": "application",
-                                    "name" : "application2"
+                                    "converge" : true
                                 }
-                            ],
-                            "converge" : true
+                            ]
                         }
                         ,
                         {
                             "step" : [
                                 {
-                                    "name" : "app-server-3",
-                                    "item": "static-server",
-                                    "name" : "static3"
-                                },
-                                {
-                                    "item": "web-server",
-                                    "name" : "web-server3"
-                                },
-                                {
-                                    "item": "application",
-                                    "name" : "application3"
-                                }
-                            ],
-                            "converge" : true
-                        }
-                        ,
-                        {
-                            "step" : [
-                                {
-                                    "name" : "app-server-4",
                                     "item": "static-server"
                                 },
                                 {
-                                    "item": "web-server",
-                                    "name" : "web-server5"
+                                    "item": "web-server"
                                 },
                                 {
                                     "item": "application",
-                                    "name" : "application5"
+                                    "converge" : true
                                 }
-                            ],
-                            "converge" : true
+                            ]
+                        }
+                        ,
+                        {
+                            "step" : [
+                                {
+                                    "item": "static-server"
+                                },
+                                {
+                                    "item": "web-server"
+                                },
+                                {
+                                    "item": "application",
+                                    "converge" : true
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            "step" : [
+                                {
+                                    "item" : "static-server"
+                                },
+                                {
+                                    "item": "web-server"
+                                },
+                                {
+                                    "item": "application",
+                                    "converge" : true
+                                }
+                            ]
                         }
                     ]
                 }
