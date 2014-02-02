@@ -200,18 +200,17 @@ var Build = function() {
         stepFamily = 0;
         var nodes = [];
 
-        data.forEach(function(d, i) {
-            d.stepFamily = stepFamily;
-            d._id = d.name + '.' + d.stepFamily;
-            d.x = (i * spacing) + origin;
-            d.y = World.height/2;
+        var d = data[0];
+        d.stepFamily = stepFamily;
+        d._id = d.name + '.' + d.stepFamily;
+        d.x = (0 * spacing) + origin;
+        d.y = World.height/2;
 
-            nodes.push(d);
+        nodes.push(d);
 
-            if(d.branch) {
-                nodes = nodes.concat(processBranch(d, data[i+1]));
-            }
-        });
+        if(d.branch) {
+            nodes = nodes.concat(processBranch(d, null));
+        }
 
         return nodes;
     }
