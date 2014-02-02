@@ -192,27 +192,12 @@ var Build = function() {
     var origin = 0;
     var spacing = 140;
     var stepFamily = 0;
+    var offset = 0;
 
     // Build the graph based on the custom data format.
     // This means determing x and y coordinates relative to the nodes.
     function graph(data) {
-        origin = 0;
-        stepFamily = 0;
-        var nodes = [];
-
-        var d = data[0];
-        d.stepFamily = stepFamily;
-        d._id = d.name + '.' + d.stepFamily;
-        d.x = (0 * spacing) + origin;
-        d.y = World.height/2;
-
-        nodes.push(d);
-
-        if(d.branch) {
-            nodes = nodes.concat(processBranch(d, null));
-        }
-
-        return nodes;
+        return processSteps({ step: [data[0]] }, null, null);
     }
 
     function links(data) {
@@ -234,39 +219,45 @@ var Build = function() {
         return nodes;
     }
 
+    // A branch is required to have leaf nodes that contain steps.
+    // even if the step itself branches out.
     function processBranch(node, neighbor) {
         var children = [];
-        var offset = (spacing * (node.branch.length-1) / 2 );
+        offset = (spacing * (node.branch.length-1) / 2 );
 
-        node.branch.forEach(function(b) {
-            stepFamily += 1;
-
-            // connect first step to parent
-            b.step[0].parent = node;
-
-            b.step.forEach(function(step, x) {
-
-                // connect step to parent's sibling if convergent
-                if(step.converge && neighbor) {
-                    step.parent = neighbor;
-                }
-
-                step.stepFamily = stepFamily;
-                step._id = step.name + '.' + step.stepFamily;
-                step.x = node.x + ((x+1) * spacing);
-                step.y = node.y - offset;
-
-                children.push(step);
-
-                if(step.branch) {
-                    var stepChildren = processBranch(step, b.step[x+1]);
-
-                    console.log(stepChildren.length)
-                    children = children.concat(stepChildren);
-                }
-
-            })
+        node.branch.forEach(function(branch) {
+            children = children.concat(processSteps(branch, node, neighbor));
             offset -= spacing;
+        })
+
+        return children;
+    }
+
+    function processSteps(branch, parent, neighbor) {
+        var children = [];
+        stepFamily += 1;
+
+        // connect first step to parent
+        branch.step[0].parent = parent;
+
+        branch.step.forEach(function(step, i) {
+            // connect step to parent's sibling if convergent
+            if(step.converge && neighbor) {
+                step.parent = neighbor;
+            }
+
+            step.stepFamily = stepFamily;
+            step._id = step.name + '.' + step.stepFamily;
+            step.x = (parent ? parent.x : 0) + ((i+1) * spacing);
+            step.y = parent ? (parent.y - offset) : World.height/2;
+
+            children.push(step);
+
+            if(step.branch) {
+                var stepChildren = processBranch(step, branch.step[i+1]);
+                children = children.concat(stepChildren);
+            }
+
         })
 
         return children;
