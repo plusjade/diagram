@@ -234,8 +234,7 @@
                     "item": "web-page"
                 },
                 {
-                    "item": "server",
-                    "active" : true
+                    "item": "server"
                 },
                 {
                     "item": "web-server"
@@ -347,7 +346,8 @@
                     "active" : true
                 },
                 {
-                    "item": "server"
+                    "item": "server",
+                    "public" : false
                 },
                 {
                     "item": "web-server"
@@ -390,7 +390,8 @@
                                 {
                                     "item": "server",
                                     "name" : "server (app 1)",
-                                    "active" : true
+                                    "active" : true,
+                                    "public" : false
                                 },
                                 {
                                     "item": "web-server"
@@ -407,7 +408,8 @@
                                 {
                                     "item": "server",
                                     "name" : "server (app 2)",
-                                    "active" : true
+                                    "active" : true,
+                                    "public" : false
                                 },
                                 {
                                     "item": "web-server"
@@ -452,7 +454,8 @@
                                 {
                                     "item": "server",
                                     "name" : "server (app 1)",
-                                    "active" : true
+                                    "active" : true,
+                                    "public" : false
                                 },
                                 {
                                     "item": "web-server"
@@ -470,7 +473,8 @@
                                 {
                                     "item": "server",
                                     "name" : "server (app 2)",
-                                    "active" : true
+                                    "active" : true,
+                                    "public" : false
                                 },
                                 {
                                     "item": "web-server"
@@ -487,7 +491,8 @@
                                 {
                                     "item": "server",
                                     "name" : "server (app 3)",
-                                    "active" : true
+                                    "active" : true,
+                                    "public" : false
                                 },
                                 {
                                     "item": "web-server"
@@ -504,7 +509,8 @@
                                 {
                                     "item" : "server",
                                     "name" : "server (app 4)",
-                                    "active" : true
+                                    "active" : true,
+                                    "public" : false
                                 },
                                 {
                                     "item": "web-server"
