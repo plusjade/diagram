@@ -413,7 +413,7 @@ function update(data) {
 // Initialize application
 
 var World = {
-    height : 600
+    height : 700
     ,isServerDiagraminView : false
     ,duration : 500
     ,diagonal : d3.svg.diagonal()
@@ -422,7 +422,7 @@ var World = {
 }
 
 World.wrap = d3.select("#world").append("svg:svg")
-    .attr("height", World.height)
+    .attr("height", "99%")
 
 World.container = World.wrap
     .append("svg:g")
