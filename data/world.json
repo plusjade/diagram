@@ -93,7 +93,8 @@
                     "item": "web-browser"
                 },
                 {
-                    "item": "internet"
+                    "item": "internet",
+                    "active" : true
                 }
             ]
         }
