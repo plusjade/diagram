@@ -5,34 +5,38 @@ var Style = {
             //.attr("r", '2em')
             .style("fill", 'lightsteelblue');
     }
-
-    ,servers : function(nodes) {
+    ,
+    server : function(nodes) {
         return nodes
             .append("svg:rect")
             .attr('class', 'rect')
             .attr("height", 40)
             .attr("width", 34)
     }
-    ,internet : function(nodes) {
+    ,
+    internet : function(nodes) {
         return nodes.append('svg:g').attr('class', '_internet')
             .append('path')
             .attr('d', d3.svg.symbol().type('cross').size(400))
             .style("fill", '#680148');
     }
-    ,website : function(nodes) {
+    ,
+    website : function(nodes) {
         return nodes
             .append("svg:rect")
             .attr('class', 'rect')
             .attr("height", 30)
             .attr("width", 24)
     }
-    ,webBrowser : function(nodes) {
+    ,
+    'web-browser' : function(nodes) {
         return nodes
             .append('path')
             .attr('d', d3.svg.symbol().type('diamond').size(600))
             .style("fill", '#0B486B');
     }
-    ,labels : function(nodes) {
+    ,
+    labels : function(nodes) {
         return nodes
             .append("svg:text")
             .attr("dy", "-1em")
@@ -299,26 +303,17 @@ function update(root, data) {
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append("svg:g")
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
-        .attr("transform", function(d) { return "translate(" + root.x0 + "," + root.y0 + ")"; })
+        .attr("transform", function(d) {
+            return "translate(" + root.x0 + "," + root.y0 + ")";
+        })
 
     nodeEnter.call(Style.labels);
 
-    nodeEnter
-        .filter(function(d){ return d.type === 'web-browser' })
-        .call(Style.webBrowser)
-    nodeEnter
-        .filter(function(d){ return d.type === 'website' })
-        .call(Style.website)
-    nodeEnter
-        .filter(function(d){ return d.type === 'software' })
-        .call(Style.software)
-
-    nodeEnter
-        .filter(function(d){ return d.type === 'server' })
-        .call(Style.servers)
-    nodeEnter
-        .filter(function(d){ return d.type === 'internet' })
-        .call(Style.internet)
+    for(key in Parse.items) {
+        nodeEnter
+            .filter(function(d){ return d.type === Parse.items[key].type })
+            .call(Style[Parse.items[key].type])
+    }
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
