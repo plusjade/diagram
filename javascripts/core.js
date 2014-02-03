@@ -43,7 +43,7 @@ var Style = {
             .attr("text-anchor", function(d) { 
                 return "middle";
             })
-            .text(function(d) { return d.name + "-"  + d.depth + " " + d.stepFamily; })
+            .text(function(d) { return d.name })
             .style("fill-opacity", 1e-6);
     }
 }
@@ -432,13 +432,6 @@ World.wrap.call(d3.behavior.zoom().on("zoom", function(){
 
 
 World.width = d3.select('svg').node().clientWidth;
-
-World.tree = d3.layout.tree().size([World.height, World.width/2])
-    .separation(function (a, b) {
-        console.log('separation')
-         return 100;
-         return a.parent == b.parent ? 1 : 2;
-    })//.nodeSize([800,400])
 
 World.serverDiagram = World.container.append("svg:svg")
                         .attr('class', 'server-diagram')
