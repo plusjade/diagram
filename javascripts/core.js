@@ -191,7 +191,7 @@ function showActive(active) {
 
 var Build = function() {
     var origin = 0;
-    var spacing = 140;
+    var spacing = 120;
     var stepFamily = 0;
     var verticalOffset = 0;
 
@@ -387,19 +387,6 @@ function update(data) {
     });
 
     showActive(active);
-
-    // FIXME: should not be a timeout
-    // reposition logic
-    setTimeout(function() {
-        console.log("reposition")
-        var dimensions = World.serverDiagram.node().getBBox();
-        var offset = (d3.select('svg').node().clientWidth - dimensions.width)/2;
-        if(offset > 0) {
-            World.serverDiagram.transition()
-                .duration(World.duration)
-                .attr('x', offset)
-        }
-    }, 1000)
 }
 
 //---------------------------------------------------
