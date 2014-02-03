@@ -20,7 +20,6 @@ var Style = {
                 .append('use')
                     .attr('y', -20)
                     .attr('class', "datamelon menu")
-                    .attr('shape-rendering','geometricPrecision')
                     .attr('xlink:href', '#menu')
     }
     ,
@@ -30,7 +29,6 @@ var Style = {
                 .append('use')
                     .attr('y', -20)
                     .attr('class', "datamelon database")
-                    .attr('shape-rendering','geometricPrecision')
                     .attr('xlink:href', '#database')
     }
     ,
