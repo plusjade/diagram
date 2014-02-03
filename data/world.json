@@ -1,5 +1,12 @@
 {
     "items" : {
+        "user" : {
+            "item": "user",
+            "name": "You",
+            "type": "user",
+            "public" : true
+        }
+        ,
         "web-browser" : {
             "item": "web-browser",
             "name": "Web Browser",
@@ -80,6 +87,10 @@
             "step" : [
                 {
                     "page" : "web-browser",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item" : "web-browser",
                     "active" : true
                 }
@@ -90,6 +101,10 @@
             "step" : [
                 {
                     "page" : "internet",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -103,6 +118,10 @@
             "step" : [
                 {
                     "page" : "website",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -119,6 +138,10 @@
             "step" : [
                 {
                     "page" : "static-server",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -138,6 +161,10 @@
             "step" : [
                 {
                     "page" : "filesystem",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -161,6 +188,10 @@
             "step" : [
                 {
                     "page" : "web-server",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -190,6 +221,10 @@
             "step" : [
                 {
                     "page" : "web-application",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -223,6 +258,10 @@
             "step" : [
                 {
                     "page" : "database",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -255,6 +294,10 @@
             "step" : [
                 {
                     "page" : "dedicated-database",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -287,6 +330,10 @@
             "step" : [
                 {
                     "page" : "reverse-proxy",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -323,6 +370,10 @@
             "step" : [
                 {
                     "page" : "multi-app-architecture",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -333,13 +384,13 @@
                 },
                 {
                     "item": "reverse-proxy",
-                    "active" : true,
                     "branch" : [
                         {
                             "step" : [
                                 {
                                     "item": "server",
-                                    "name" : "server (app)"
+                                    "name" : "server (app 1)",
+                                    "active" : true
                                 },
                                 {
                                     "item": "web-server"
@@ -355,7 +406,8 @@
                             "step" : [
                                 {
                                     "item": "server",
-                                    "name" : "server (app)"
+                                    "name" : "server (app 2)",
+                                    "active" : true
                                 },
                                 {
                                     "item": "web-server"
@@ -379,7 +431,11 @@
         {
             "step" : [
                 {
-                    "page" : "multi-app-architecture",
+                    "page" : "multi-app-architecture-2",
+                    "item" : "user"
+                }
+                ,
+                {
                     "item": "web-browser"
                 },
                 {
@@ -390,13 +446,13 @@
                 },
                 {
                     "item": "reverse-proxy",
-                    "active" : true,
                     "branch" : [
                         {
                             "step" : [
                                 {
                                     "item": "server",
-                                    "name" : "server (app)"
+                                    "name" : "server (app 1)",
+                                    "active" : true
                                 },
                                 {
                                     "item": "web-server"
@@ -413,7 +469,8 @@
                             "step" : [
                                 {
                                     "item": "server",
-                                    "name" : "server (app)"
+                                    "name" : "server (app 2)",
+                                    "active" : true
                                 },
                                 {
                                     "item": "web-server"
@@ -429,7 +486,8 @@
                             "step" : [
                                 {
                                     "item": "server",
-                                    "name" : "server (app)"
+                                    "name" : "server (app 3)",
+                                    "active" : true
                                 },
                                 {
                                     "item": "web-server"
@@ -444,7 +502,9 @@
                         {
                             "step" : [
                                 {
-                                    "item" : "server"
+                                    "item" : "server",
+                                    "name" : "server (app 4)",
+                                    "active" : true
                                 },
                                 {
                                     "item": "web-server"

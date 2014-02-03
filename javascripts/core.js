@@ -5,6 +5,15 @@ var Style = {
             .attr("r", 7)
     }
     ,
+    user : function(nodes) {
+        return nodes
+            .append('g')
+                .append('use')
+                    .attr('y', -20)
+                    .attr('class', "datamelon user-2")
+                    .attr('xlink:href', '#user-2')
+    }
+    ,
     server : function(nodes) {
         return nodes
             .append('g')
