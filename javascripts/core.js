@@ -2,49 +2,79 @@ var Style = {
     software : function(nodes) {
         return nodes
             .append("svg:circle")
-            //.attr("r", '2em')
-            .style("fill", 'lightsteelblue');
+            .attr("r", 7)
     }
     ,
     server : function(nodes) {
         return nodes
-            .append("svg:rect")
-            .attr('class', 'rect')
-            .attr("height", 40)
-            .attr("width", 34)
+            .append('g')
+                .append('use')
+                    .attr('y', -20)
+                    .attr('class', "datamelon menu")
+                    .attr('shape-rendering','geometricPrecision')
+                    .attr('xlink:href', '#menu')
+    }
+    ,
+    'database-server' : function(nodes) {
+        return nodes
+            .append('g')
+                .append('use')
+                    .attr('y', -20)
+                    .attr('class', "datamelon database")
+                    .attr('shape-rendering','geometricPrecision')
+                    .attr('xlink:href', '#database')
     }
     ,
     internet : function(nodes) {
-        return nodes.append('svg:g').attr('class', '_internet')
-            .append('path')
-            .attr('d', d3.svg.symbol().type('cross').size(400))
-            .style("fill", '#680148');
+        return nodes
+            .append('g')
+                .append('use')
+                .attr('y', -20)
+                .attr('class', "datamelon wifi-high")
+                .attr('xlink:href', '#wifi-high')
     }
     ,
     website : function(nodes) {
         return nodes
-            .append("svg:rect")
-            .attr('class', 'rect')
-            .attr("height", 30)
-            .attr("width", 24)
+            .append('g')
+                .append('use')
+                    .attr('y', -20)
+                    .attr('class', "datamelon browser-2")
+                    .attr('xlink:href', '#browser-2')
     }
     ,
     'web-browser' : function(nodes) {
         return nodes
-            .append('path')
-            .attr('d', d3.svg.symbol().type('diamond').size(600))
-            .style("fill", '#0B486B');
+            .append('g')
+                .append('use')
+                    .attr('y', -20)
+                    .attr('class', "datamelon web-browser")
+                    .attr('xlink:href', '#web-browser')
     }
     ,
     labels : function(nodes) {
         return nodes
             .append("svg:text")
-            .attr("dy", "-1em")
+            .attr("dy", 30)
             .attr("text-anchor", function(d) { 
                 return "middle";
             })
             .text(function(d) { return d.name })
             .style("fill-opacity", 1e-6);
+    }
+    ,
+    pointer : function(nodes) {
+        nodes.append("line")
+            .attr("x1", -20)
+            .attr("x2", -100)
+            .attr("y1", 30)
+            .attr("y2", 120)
+        nodes.append('path')
+            .attr("transform", "translate(-20,30) rotate(40 0 0)")
+            .attr('d', d3.svg.symbol().type('triangle-up').size(180))
+            .attr('fill', '#333')
+
+        return nodes;
     }
 }
 
@@ -171,15 +201,7 @@ function showActive(active) {
             return "translate(" + d.x + "," + d.y + ")";
         })
 
-    derpEnter.append("line")
-        .attr("x1", -20)
-        .attr("x2", -100)
-        .attr("y1", 30)
-        .attr("y2", 120)
-    derpEnter.append('path')
-        .attr("transform", "translate(-20,30) rotate(40 0 0)")
-        .attr('d', d3.svg.symbol().type('triangle-up').size(180))
-        .attr('fill', '#333')
+    derpEnter.call(Style.pointer);
 
     derp.exit().remove();
 
@@ -294,11 +316,8 @@ function update(data) {
 
     // Update the nodes
     var node = World.serverDiagram.selectAll("g.node")
-        .data(nodes, function(d) { 
-            return d._id;
-        });
+        .data(nodes, function(d) { return d._id });
 
-    // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append("svg:g")
         .attr('class', function(d){ return 'node ' + d.type + ' ' + d.name })
         .attr("transform", function(d) {
@@ -316,16 +335,9 @@ function update(data) {
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
         .duration(World.duration)
-        .attr("transform", function(d) { 
-            var computed_y = (['server', 'website'].indexOf(d.type) > -1 ? (d.y-30) : d.y);
-
-            return "translate(" + d.x + "," + computed_y + ")";
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
         });
-
-    nodeUpdate.select("circle")
-        .attr("r", 7)
-        .style("fill", 'lightsteelblue')
-
 
     nodeUpdate.select("text")
         .attr('dx', function(d) {
@@ -373,7 +385,6 @@ function update(data) {
     link.transition()
         .duration(World.duration)
         .attr("d", World.diagonal);
-
 
     // Transition exiting nodes to the parent's new position.
     link.exit().transition()

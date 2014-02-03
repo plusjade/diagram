@@ -1,3 +1,7 @@
+/* http://www.colourlovers.com/palette/971420/Hippie_van_%E2%98%AE */
+/* http://www.colourlovers.com/palette/81885/Hymn_For_My_Soul */
+/* http://www.colourlovers.com/palette/1249110/jujubes */
+/* http://www.colourlovers.com/palette/55400/Neon_Virus */
 body {
   overflow: hidden;
   margin: 0;
@@ -95,25 +99,6 @@ a:hover {
   color: #999;
 }
 
-
-
-.node circle {
-  cursor: pointer;
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.node text {
-  font-size: 14px;
-}
-
-path.link {
-  fill: none;
-  stroke: #777;
-  stroke-width: 1.5px;
-  stroke-dasharray:3, 3;
-}
 #navigation {
   position:absolute;
   top:0;
@@ -136,45 +121,8 @@ path.link {
 #navigation li:hover { border-color:#DD2B5D; }
 #navigation li.active { background-color:#1B3742; color:#ECEAD6; border-color:#DD2B5D; }
 
-
-.website rect {
-  height: 30px;
-  width: 24px;
-  stroke: #519548;
-  fill: #88C425;
-}
-
-.server rect {
-  height: 30px;
-  width: 24px;
-  stroke: #D46700;
-  fill: #FFC48C;
-}
-
-.server.active rect {
-  stroke: blue;
-}
-
 svg {
   overflow: visible;
-}
-
-.internet line {
-  stroke: #222;
-  stroke-width: 1;
-}
-
-.internet .background {
-  font-size:20px;
-  fill: white;
-  stroke: whitesmoke;
-  stroke-width: 8;
-  stroke-linecap: 'round';
-  stroke-linejoin: 'round';
-}
-
-.internet .foreground { 
-  font-size:20px;
 }
 
 #description {
@@ -232,15 +180,44 @@ kbd {
   white-space: nowrap;}
 
 
-  ._internet line {
-    stroke: #ccc;
-    stroke-width: 1;
-  }
-
-
 #world > svg {
   width: 100%;
   border : 1px solid;
   background-color: #FFF;
   margin-top: 48px;
 }
+
+/* icon styles */
+/* --------------------------- */
+
+.node text {
+  font-size: 14px;
+  font-family: courier;
+  fill: #0B2E59;
+}
+
+path.link {
+  fill: none;
+  stroke: #A0C55F;
+  stroke-width: 1.5px;
+  stroke-dasharray:3, 3;
+}
+
+.node circle {
+  cursor: pointer;
+  fill: #F4DD51;
+  stroke: #E6AC27;
+  stroke-width: 1.5px;
+}
+.datamelon {
+  width:30px; height:30px; fill:#333;
+}
+
+.datamelon.web-browser { fill: #228DFF; }
+.datamelon.wifi-high { fill: #FF0092; }
+.datamelon.browser-2 { fill: #772A53; }
+.datamelon.menu { fill: #0D6759; }
+.datamelon.database { fill: #FA3C08; }
+/* --------------------------- */
+/* end icon styles */
+
