@@ -99,7 +99,7 @@ var Navigation = {
 }
 
 var Parse = {
-    parseLinearDataFormat : function(data) {
+    stepDataFormat : function(data) {
         var self = this;
         return data.map(function(node) {
             return self.processSteps(node, 0);
@@ -455,7 +455,7 @@ function startServer() {
 
         Parse.items = data.items;
 
-        World.data = Parse.parseLinearDataFormat(data.world);
+        World.data = Parse.stepDataFormat(data.world);
 
         World.data[0][0].x0 = 0;
         World.data[0][0].y0 = World.height / 2;
