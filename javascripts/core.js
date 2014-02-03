@@ -75,10 +75,7 @@ var Navigation = {
 
     // Internal. Prgramatically navigate to step at index.
     , _navigate : function(index) {
-        World.data[index].x0 = World.height/2;
-        World.data[index].y0 = 0;
-        
-        update(World.data[0], World.data[index]);
+        update(World.data[index]);
         this.highlight(index);
         this.current = index;
     }
@@ -285,7 +282,8 @@ var Build = function() {
 }();
 
 
-function update(root, data) {
+function update(data) {
+    var root = { x0:0, y0: World.height / 2 };
     var nodes = Build.graph(data);
     var active = [];
     nodes.forEach(function(d) {
@@ -450,10 +448,7 @@ function startServer() {
 
         World.data = Parse.stepDataFormat(data.world);
 
-        World.data[0][0].x0 = 0;
-        World.data[0][0].y0 = World.height / 2;
-
-        update(World.data[0], World.data[0]);
+        update(World.data[0]);
         Navigation.render();
     })
 }
