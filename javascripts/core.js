@@ -5,6 +5,15 @@ var Style = {
             .attr("r", 7)
     }
     ,
+    icon : function(nodes) {
+        return nodes
+            .append('g')
+                .append('use')
+                    .attr('y', -20)
+                    .attr('class', function(d) { return "datamelon " + d.icon })
+                    .attr('xlink:href', function(d) { return '#' + d.icon })
+    }
+    ,
     user : function(nodes) {
         return nodes
             .append('g')

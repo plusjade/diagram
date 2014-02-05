@@ -1,5 +1,11 @@
 {
     "items" : {
+        "icon" : {
+            "item": "icon",
+            "name": "icon",
+            "type": "icon"
+        }
+        ,
         "user" : {
             "item": "user",
             "name": "You",
@@ -188,7 +194,38 @@
                 ,
                 {
                     "item": "filesystem",
-                    "active" : true
+                    "active" : true,
+                    "branch" : [
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "HTML",
+                                    "icon" : "document-html"
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "Image",
+                                    "icon" : "image"
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "Video",
+                                    "icon" : "video-2"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }
@@ -223,7 +260,38 @@
                 }
                 ,
                 {
-                    "item": "filesystem"
+                    "item": "filesystem",
+                    "branch" : [
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "HTML",
+                                    "icon" : "document-html"
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "Image",
+                                    "icon" : "image"
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "Video",
+                                    "icon" : "video-2"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }
@@ -264,7 +332,38 @@
                 }
                 ,
                 {
-                    "item": "filesystem"
+                    "item": "filesystem",
+                    "branch" : [
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "HTML",
+                                    "icon" : "document-html"
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "Image",
+                                    "icon" : "image"
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            "step" : [
+                                {
+                                    "item" : "icon",
+                                    "name" : "Video",
+                                    "icon" : "video-2"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }
