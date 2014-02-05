@@ -81,12 +81,12 @@ var Style = {
     ,
     pointer : function(nodes) {
         nodes.append("line")
-            .attr("x1", -20)
-            .attr("x2", -100)
-            .attr("y1", 30)
-            .attr("y2", 120)
+            .attr("x1", -40)
+            .attr("x2", -80)
+            .attr("y1", 60)
+            .attr("y2", 110)
         nodes.append('path')
-            .attr("transform", "translate(-20,30) rotate(40 0 0)")
+            .attr("transform", "translate(-35,53) rotate(40 0 0)")
             .attr('d', d3.svg.symbol().type('triangle-up').size(180))
             .attr('fill', '#333')
 
