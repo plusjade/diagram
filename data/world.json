@@ -86,12 +86,30 @@
         {
             "step" : [
                 {
+                    "page" : "web-page",
+                    "item" : "user"
+                }
+                ,
+                {
+                    "item": "web-page",
+                    "active" : true
+                }
+            ]
+        }
+        ,
+        {
+            "step" : [
+                {
                     "page" : "web-browser",
                     "item" : "user"
                 }
                 ,
                 {
-                    "item" : "web-browser",
+                    "item": "web-page"
+                }
+                ,
+                {
+                    "item": "web-browser",
                     "active" : true
                 }
             ]
@@ -105,30 +123,15 @@
                 }
                 ,
                 {
-                    "item": "web-browser"
-                },
-                {
-                    "item": "internet",
-                    "active" : true
-                }
-            ]
-        }
-        ,
-        {
-            "step" : [
-                {
-                    "page" : "website",
-                    "item" : "user"
+                    "item": "web-page"
                 }
                 ,
                 {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
-                    "item": "internet"
-                },
-                {
-                    "item": "web-page",
+                    "item": "internet",
                     "active" : true
                 }
             ]
@@ -142,14 +145,17 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "server",
                     "active" : true
@@ -165,17 +171,21 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "server"
-                },
+                }
+                ,
                 {
                     "item": "filesystem",
                     "active" : true
@@ -192,17 +202,21 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "server"
-                },
+                }
+                ,
                 {
                     "item": "web-server",
                     "active" : true
@@ -225,17 +239,21 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "server"
-                },
+                }
+                ,
                 {
                     "item": "web-server"
                 }
@@ -261,17 +279,21 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "server"
-                },
+                }
+                ,
                 {
                     "item": "web-server"
                 }
@@ -297,17 +319,21 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "server"
-                },
+                }
+                ,
                 {
                     "item": "web-server"
                 }
@@ -333,14 +359,17 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "reverse-proxy",
                     "active" : true
@@ -374,14 +403,17 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "reverse-proxy",
                     "branch" : [
@@ -438,14 +470,17 @@
                 }
                 ,
                 {
+                    "item": "web-page"
+                }
+                ,
+                {
                     "item": "web-browser"
-                },
+                }
+                ,
                 {
                     "item": "internet"
-                },
-                {
-                    "item": "web-page"
-                },
+                }
+                ,
                 {
                     "item": "reverse-proxy",
                     "branch" : [
